@@ -14,9 +14,6 @@ class Subscription
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $type = null;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $price = null;
 
@@ -30,22 +27,16 @@ class Subscription
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\ManyToOne(inversedBy: 'subscriptions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SubscriptionType $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
+    
 
     public function getPrice(): ?string
     {
@@ -91,6 +82,18 @@ class Subscription
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getType(): ?SubscriptionType
+    {
+        return $this->type;
+    }
+
+    public function setType(?SubscriptionType $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }
