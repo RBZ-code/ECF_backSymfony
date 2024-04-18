@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,8 +22,8 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $author = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $year_published = null;
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $yearPublished = null;
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
@@ -36,8 +38,19 @@ class Book
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'book_condition')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Condition $book_condition = null;
+
+    /**
+     * @var Collection<int, Loan>
+     */
+    #[ORM\OneToMany(targetEntity: Loan::class, mappedBy: 'book', orphanRemoval: true)]
+    private Collection $loans;
+
+    public function __construct()
+    {
+        $this->loans = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -68,14 +81,14 @@ class Book
         return $this;
     }
 
-    public function getYearPublished(): ?\DateTimeInterface
+    public function getYearPublished(): ?int
     {
-        return $this->year_published;
+        return $this->yearPublished;
     }
 
-    public function setYearPublished(\DateTimeInterface $year_published): static
+    public function setYearPublished(int $yearPublished): static
     {
-        $this->year_published = $year_published;
+        $this->yearPublished = $yearPublished;
 
         return $this;
     }
@@ -136,6 +149,36 @@ class Book
     public function setBookCondition(?Condition $book_condition): static
     {
         $this->book_condition = $book_condition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Loan>
+     */
+    public function getLoans(): Collection
+    {
+        return $this->loans;
+    }
+
+    public function addLoan(Loan $loan): static
+    {
+        if (!$this->loans->contains($loan)) {
+            $this->loans->add($loan);
+            $loan->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoan(Loan $loan): static
+    {
+        if ($this->loans->removeElement($loan)) {
+            // set the owning side to null (unless already changed)
+            if ($loan->getBook() === $this) {
+                $loan->setBook(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,57 @@
+{% block body %}
+
+<!-- Vertically centered scrollable modal -->
+    <div class="modal" id="myModal{{ book.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalCenteredScrollableTitle">Confirmation de réservation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card modalBookCard p-1">
+                            
+                            <div class="image-container py-3 px-4">
+                                <img src="{{ book.image }}" class="card-img-top" id="bookImg" alt="Book Image">
+                            </div>
+                            <div class="book-title-container text-center pt-3">
+                                <h5 class="card-title">{{ book.title }}</h5>
+                                <p class="card-text">{{ book.author }}</p>
+                            </div>
+                            <div class="star-rating d-flex justify-content-center align-items-center">
+                            
+                                <div class="ratingNum-wrapper mx-2">{{ book.rating }} </div>
+                    
+                                {% set rating = book.rating|default(0) %} {# Default to 0 if rating is not set #}
+                                {% set fullStars = rating|round %} {# Round rating to nearest whole number #}
+                                {% set halfStar = rating > fullStars %} {# Check if there's a half star #}
+
+                                {% for i in 1..5 %}
+                                    {% if i <= fullStars %}
+                                        <i class="fas fa-star"></i> {# Filled star icon #}
+                                    {% elseif halfStar %}
+                                        <i class="fas fa-star-half-alt"></i> {# Half-filled star icon #}
+                                        {% set halfStar = false %} {# Only display one half star #}
+                                    {% else %}
+                                        <i class="far fa-star"></i> {# Empty star icon #}
+                                    {% endif %}
+                                {% endfor %}
+                                <br>
+                            </div>
+                            <br>
+                            <p class="mx-5">
+                                Chaque emprunt de livre est valable pendant 6 jours complets, y compris les week-ends et les jours fériés, à partir du moment où le livre est réservé.
+
+                                Il est possible de demander une prolongation unique de l'emprunt du livre avant la date de retour, ce qui ajoute 6 jours supplémentaires (une seule prolongation peut être demandée pour le livre avant son retour).
+                            </p>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary">Confirmer réservation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# end of modal #}
+{% endblock %}

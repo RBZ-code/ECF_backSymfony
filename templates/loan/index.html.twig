@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LoanController!{% endblock %}
+
+{% block body %}
+
+<h2>Testing modal</h2>
+
+<!-- Button trigger for modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+  Open Modal
+</button>
+
+<!-- Vertically centered scrollable modal -->
+<div class="modal" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalCenteredScrollableTitle">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card bookCard p-1">
+                
+                <div class="image-container py-3 px-4">
+                    <img src="{{ book.image }}" class="card-img-top" id="bookImg" alt="Book Image">
+                </div>
+                <div class="book-title-container text-center pt-3">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.author }}</p>
+                </div>
+                <div class="star-rating d-flex justify-content-center align-items-center">
+                
+                    <div class="ratingNum-wrapper mx-2">{{ book.rating }} </div>
+        
+                    {% set rating = book.rating|default(0) %} {# Default to 0 if rating is not set #}
+                    {% set fullStars = rating|round %} {# Round rating to nearest whole number #}
+                    {% set halfStar = rating > fullStars %} {# Check if there's a half star #}
+
+                    {% for i in 1..5 %}
+                        {% if i <= fullStars %}
+                            <i class="fas fa-star"></i> {# Filled star icon #}
+                        {% elseif halfStar %}
+                            <i class="fas fa-star-half-alt"></i> {# Half-filled star icon #}
+                            {% set halfStar = false %} {# Only display one half star #}
+                        {% else %}
+                            <i class="far fa-star"></i> {# Empty star icon #}
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary">Confirmer réservation</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+    const myInput = document.getElementById('myInput');
+
+    myModal.addEventListener('shown.bs.modal', () => {
+      myInput.focus();
+    });
+  });
+</script>
+{% endblock %}
