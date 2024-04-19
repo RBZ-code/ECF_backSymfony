@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RoomController!
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	<div class="container">
+		<h1>Il y a
+			{{ availableRooms|length }}
+			salles disponible !</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					
+					<th scope="col">Name</th>
+					<th scope="col">Capacity</th>
+					<th scope="col">Available</th>
+					<th scope="col">Equipements</th>
+					<th scope="col">Reserver</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for availableRooms in availableRooms %}
+					<tr>
+						<th scope="row">{{availableRooms.name}}</th>
+						
+						<td>{{availableRooms.capacity}}</td>
+						{% if availableRooms.available == 1 %}
+							<td>✅</td>
+						{% else %}
+							<td>❌</td>
+						{% endif %}
+						<td>
+							<ul>
+								{% for equipment in equipmentsByRoom[availableRooms.id] %}
+									<li>{{ equipment.name}}</li>
+								{% endfor %}
+							</ul>
+						</td>
+						<td>
+							<a href="#" class='btn btn-primary'>Reserver</a>
+						</td>
+					{% endfor %}
+				</tbody>
+			</tbody>
+		</table>
+
+	</div>
+{% endblock %}
