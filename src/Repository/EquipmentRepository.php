@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Room;
 use App\Entity\Equipment;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Equipment>
@@ -21,28 +22,13 @@ class EquipmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Equipment::class);
     }
 
-    //    /**
-    //     * @return Equipment[] Returns an array of Equipment objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Equipment
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findEquipmentsByRoom(Room $room): array
+    {
+        return $this->createQueryBuilder('e')
+            ->innerJoin('e.room', 'r')
+            ->where('r.id = :roomId')
+            ->setParameter('roomId', $room->getId())
+            ->getQuery()
+            ->getResult();
+    }
 }

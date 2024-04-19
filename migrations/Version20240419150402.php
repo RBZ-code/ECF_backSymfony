@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240418115834 extends AbstractMigration
+final class Version20240419150402 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20240418115834 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE book CHANGE rating rating NUMERIC(10, 2) DEFAULT NULL');
+        $this->addSql('ALTER TABLE book CHANGE book_condition_id book_condition_id INT DEFAULT NULL, CHANGE year_published year_published INT NOT NULL');
         $this->addSql('ALTER TABLE loan ADD book_id INT NOT NULL, ADD borrower_id INT NOT NULL');
         $this->addSql('ALTER TABLE loan ADD CONSTRAINT FK_C5D30D0316A2B381 FOREIGN KEY (book_id) REFERENCES book (id)');
         $this->addSql('ALTER TABLE loan ADD CONSTRAINT FK_C5D30D0311CE312B FOREIGN KEY (borrower_id) REFERENCES user (id)');
@@ -31,7 +31,7 @@ final class Version20240418115834 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE book CHANGE rating rating NUMERIC(10, 1) DEFAULT NULL');
+        $this->addSql('ALTER TABLE book CHANGE book_condition_id book_condition_id INT NOT NULL, CHANGE year_published year_published DATE NOT NULL');
         $this->addSql('ALTER TABLE loan DROP FOREIGN KEY FK_C5D30D0316A2B381');
         $this->addSql('ALTER TABLE loan DROP FOREIGN KEY FK_C5D30D0311CE312B');
         $this->addSql('DROP INDEX IDX_C5D30D0316A2B381 ON loan');
