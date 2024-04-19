@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+
+<h1>Login</h1>
+
+    <form method="post" action="{{ path('login_process') }}">
+        <button type="submit" class="btn btn-primary">Simulate Login</button>
+    </form>
+
+{% endblock %}

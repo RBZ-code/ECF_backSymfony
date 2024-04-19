@@ -48,7 +48,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary">Confirmer réservation</button>
+                    <a href="{{ path('app_confirm_reservation', { 'bookId': book.id }) }}" class="btn btn-primary">Confirmer Réservation</a>
+
                 </div>
             </div>
         </div>
