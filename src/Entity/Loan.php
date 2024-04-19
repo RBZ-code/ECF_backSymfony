@@ -32,7 +32,7 @@ class Loan
 
     #[ORM\ManyToOne(inversedBy: 'loanHistory')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $borrower = null;
+    private ?Utilisateur $borrower = null;
 
     public function getId(): ?int
     {
@@ -99,12 +99,12 @@ class Loan
         return $this;
     }
 
-    public function getBorrower(): ?User
+    public function getBorrower(): ?Utilisateur
     {
         return $this->borrower;
     }
 
-    public function setBorrower(?User $borrower): static
+    public function setBorrower(?Utilisateur $borrower): static
     {
         $this->borrower = $borrower;
 

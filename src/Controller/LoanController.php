@@ -9,7 +9,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -18,7 +18,7 @@ class LoanController extends AbstractController
     #[Route('/loan/{id}', name: 'app_loan')]
     public function index(int $id, BookRepository $bookRepo): Response
     {
-        $book = $bookRepo->findOneBy(['id'=>$id]);
+        $book = $bookRepo->findOneBy(['id' => $id]);
 
         return $this->render('loan/index.html.twig', [
             'book' => $book,
@@ -28,18 +28,18 @@ class LoanController extends AbstractController
     #[Route('/confirm-reservation/{bookId}', name: 'app_confirm_reservation')]
     public function confirmReservation(int $bookId, Request $request, UserRepository $userRepo, BookRepository $bookRepo, EntityManagerInterface $entityManager): Response
     {
-        // $userId = $request->getSession()->get('user_id');
+        // Get the logged-in user using Symfony's getUser() method
+        $user = $this->getUser();
 
-        $userId = 1;
-
-        if (!$userId) {
+        if (!$user) {
             return new JsonResponse(['error' => 'Unauthorized access'], 401);
         }
 
-        $user = $userRepo->findOneBy(['id' => $userId]);
+        // dd($user);
+
         $book = $bookRepo->findOneBy(['id' => $bookId]);
 
-        dd($user);
+        // dd($book);
 
         if (!$book) {
             return new JsonResponse(['error' => 'Book not found'], 404);
@@ -50,14 +50,15 @@ class LoanController extends AbstractController
         $loan->setStartDate(new DateTime());
         $loan->setEndDate((new DateTime())->modify('+6 days'));
         $loan->setBook($book);
-        $loan->setBorrower($user);
+        $loan->setBorrower($user); // Set the logged-in user as the borrower
 
         // Persist the new loan record in the database
-        // $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($loan);
+
+        $book->setAvailable(false);
+
         $entityManager->flush();
 
-        return $this->redirectToRoute('index');
+        return $this->redirectToRoute('app_library');
     }
-    
 }
