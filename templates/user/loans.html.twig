@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+
+<div class="library-container">
+    <h1 class="mt-5">Mes emprunts</h1>
+    
+    {% if loans is empty %}
+        <p>No loans found.</p>
+    {% else %}
+    
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">ID #</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Date de début</th>
+                    <th scope="col">Date de fin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in loans %}
+                    <tr>
+                    <th scope="row">{{ loan.book.id }}</th>
+                    <td>
+                    {% if loan.returnDate is null %}
+                        <span class="activeStatus"><strong>On Loan</strong></span>
+                    {% else %}
+                        Return Date: {{ loan.returnDate|date('Y-m-d') }} <br>
+                        <strong>Returned</strong>
+                    {% endif %}
+                    </td>
+                    <td>{{ loan.book.title }}</td>
+                    <td>{{ loan.startDate|date('Y-m-d') }} à {{ loan.startDate|date('H:i') }}</td>
+                    <td>{{ loan.endDate|date('Y-m-d') }} à {{ loan.endDate|date('H:i') }}</td>
+                    </tr>
+                    {% endfor %}
+                    {# <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">3</th>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                    </tr> #}
+                </tbody>
+            </table>
+        </div>
+    
+    {% endif %}
+</div>
+
+{% endblock %}
