@@ -36,8 +36,6 @@ class Subscription
         return $this->id;
     }
 
-    
-
     public function getPrice(): ?string
     {
         return $this->price;
