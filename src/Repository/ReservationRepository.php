@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Room;
 use App\Entity\Reservation;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Reservation>
@@ -21,28 +22,21 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    //    /**
-    //     * @return Reservation[] Returns an array of Reservation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findReservationsByRoomAndHour(Room $room, \DateTimeInterface $hour): array
+{
+    $startHour = clone $hour;
+    $endHour = clone $hour;
+   
 
-    //    public function findOneBySomeField($value): ?Reservation
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    return $this->createQueryBuilder('r')
+        ->where('r.idRoom = :room')
+        ->andWhere(':startHour < r.end_date') // Vérifiez si l'heure de début de la réservation est après l'heure fournie
+        ->andWhere(':endHour > r.start_date') // Vérifiez si l'heure de fin de la réservation est avant l'heure fournie
+        ->setParameter('room', $room)
+        ->setParameter('startHour', $startHour)
+        ->setParameter('endHour', $endHour)
+        ->getQuery()
+        ->getResult();
+}
+ 
 }
