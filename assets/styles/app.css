@@ -64,9 +64,27 @@ body {
 }
 
 .table-container {
-    margin: 20px 60px;
+    margin: 20px;
 }
 
 .activeStatus {
     color: forestgreen;
+}
+
+.myLoansImages {
+    height: 60px;
+    width: auto;
+}
+
+#extensionModalImg {
+    height: 80px;
+    width: auto;
+}
+
+.extensionModalInfo {
+    gap: 15px;
+}
+
+.book-title-container {
+    font-size: smaller;
 }

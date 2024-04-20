@@ -34,6 +34,12 @@ class Loan
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $borrower = null;
 
+    #[ORM\Column]
+    private ?bool $extension = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $extension_date = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +113,30 @@ class Loan
     public function setBorrower(?Utilisateur $borrower): static
     {
         $this->borrower = $borrower;
+
+        return $this;
+    }
+
+    public function isExtension(): ?bool
+    {
+        return $this->extension;
+    }
+
+    public function setExtension(bool $extension): static
+    {
+        $this->extension = $extension;
+
+        return $this;
+    }
+
+    public function getExtensionDate(): ?\DateTimeInterface
+    {
+        return $this->extension_date;
+    }
+
+    public function setExtensionDate(?\DateTimeInterface $extension_date): static
+    {
+        $this->extension_date = $extension_date;
 
         return $this;
     }

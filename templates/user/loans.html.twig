@@ -17,9 +17,11 @@
                     <tr>
                     <th scope="col">ID #</th>
                     <th scope="col">Statut</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Titre</th>
                     <th scope="col">Date de début</th>
                     <th scope="col">Date de fin</th>
+                    <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,28 +30,76 @@
                     <th scope="row">{{ loan.book.id }}</th>
                     <td>
                     {% if loan.returnDate is null %}
-                        <span class="activeStatus"><strong>On Loan</strong></span>
+                        <span class="activeStatus"><strong>En prêt</strong></span>
                     {% else %}
                         Return Date: {{ loan.returnDate|date('Y-m-d') }} <br>
                         <strong>Returned</strong>
                     {% endif %}
                     </td>
+                    <td><img src="{{ loan.book.image }}" class="myLoansImages" alt="Book Image"></td>
                     <td>{{ loan.book.title }}</td>
                     <td>{{ loan.startDate|date('Y-m-d') }} à {{ loan.startDate|date('H:i') }}</td>
-                    <td>{{ loan.endDate|date('Y-m-d') }} à {{ loan.endDate|date('H:i') }}</td>
+                    {% if loan.extensionDate is null %}
+                        <td>{{ loan.endDate|date('Y-m-d') }} à {{ loan.endDate|date('H:i') }}</td>
+                    {% else %}
+                        <td>{{ loan.extensionDate|date('Y-m-d') }} à {{ loan.extensionDate|date('H:i') }}</td>
+                    {% endif %}
+                    <td>
+                        {% if loan.returnDate is null %}
+                        {% if loan.extension %}
+                            <button type="button" class="btn btn-outline-primary" disabled>Prolongation déja utilisé</button>
+                        {% else %}
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#myModal{{ loan.book.id }}">Prolonger</button>
+                        {% endif %}
+
+                        {% endif %}
+                    </td>
                     </tr>
+
+                    <!-- Vertically centered scrollable modal -->
+                        <div class="modal" id="myModal{{ loan.book.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalCenteredScrollableTitle">Confirmation de prolongation</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="modalBookCard p-1">
+                                                
+                                                <p class="mx-5">
+                                                    Êtes-vous sur de vouloir demander une prolongation de ce livre ?
+
+                                                    Une seule prolongation peut être demandée (pendant la période d'emprunt) pour le livre avant son retour, ce qui ajoute 6 jours supplémentaires.
+                                                </p>
+                                                <br>
+                                                <div class="extensionModalInfo d-flex p-2">
+                                                    
+                                                    <img src="{{ loan.book.image }}" id="extensionModalImg" alt="Book Image">
+                                                   
+                                                    <div class="book-title-container pt-3">
+                                                        <h5 class="card-title">{{ loan.book.title }}</h5>
+                                                        <p class="card-text">{{ loan.book.author }}</p>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <br>
+                                                
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                        <a href="{{ path('app_extend_loan', { 'loanId': loan.id }) }}" class="btn btn-primary">Confirmer Prolongation</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {# end of modal #}
+                    
+
                     {% endfor %}
-                    {# <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                    </tr> #}
+                    
                 </tbody>
             </table>
         </div>

@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Loan;
 use App\Repository\BookRepository;
+use App\Repository\LoanRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,15 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LoanController extends AbstractController
 {
-    #[Route('/loan/{id}', name: 'app_loan')]
-    public function index(int $id, BookRepository $bookRepo): Response
-    {
-        $book = $bookRepo->findOneBy(['id' => $id]);
-
-        return $this->render('loan/index.html.twig', [
-            'book' => $book,
-        ]);
-    }
 
     #[Route('/confirm-reservation/{bookId}', name: 'app_confirm_reservation')]
     public function confirmReservation(int $bookId, Request $request, UserRepository $userRepo, BookRepository $bookRepo, EntityManagerInterface $entityManager): Response
@@ -35,11 +27,7 @@ class LoanController extends AbstractController
             return new JsonResponse(['error' => 'Unauthorized access'], 401);
         }
 
-        // dd($user);
-
         $book = $bookRepo->findOneBy(['id' => $bookId]);
-
-        // dd($book);
 
         if (!$book) {
             return new JsonResponse(['error' => 'Book not found'], 404);
@@ -60,5 +48,28 @@ class LoanController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_library');
+    }
+
+    #[Route('/extend-loan/{loanId}', name: 'app_extend_loan')]
+    public function extendLoan(int $loanId, LoanRepository $loanRepo, EntityManagerInterface $entityManager): Response
+    {
+        $loan = $loanRepo->findOneBy(['id' => $loanId]);
+
+        if (!$loan) {
+            return new JsonResponse(['error' => 'Book not found'], 404);
+        }
+
+        $endDate = $loan->getEndDate();
+        $endDate->modify('+6 days');
+        // Question : Why didn't it work to just use setEndDate() to modify my end_date ??
+        $loan->setExtensionDate($endDate);
+        $loan->setExtension(true);
+
+        // dd($loan);
+
+        $entityManager->persist($loan);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_my_loans');
     }
 }
