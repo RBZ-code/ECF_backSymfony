@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Heures de réservation{% endblock %}
+
+{% block body %}
+    <div class="container">
+   {# {{ dump(unavailable_hours) }} #}
+        <h1>Heures de réservation disponibles</h1>
+        <div class="row">
+            {% for hour in 8..18 %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Réservation à {{ hour }}h</h5>
+                            <p class="card-text">
+                                {% if unavailable_hours is not empty and hour ~ ':00' in unavailable_hours %}
+                                    <button class='btn btn-danger' style="cursor: not-allowed">
+                                    Complet
+                                    </button>
+                                {% elseif current_hour >= hour and current_date|date('Y-m-d') == selectedDate|date('Y-m-d') %}
+                                    <button class='btn btn-danger' style="cursor: not-allowed">
+                                    Indisponible
+                                    </button>
+                                {% else %}
+                                    <a href="{{ path('form_reservation', {id: room.id}) }}?selectedDate={{ selectedDate|date('Y-m-d') ~ ' ' ~ hour ~ ':00' }}" class="btn btn-primary">Réserver</a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

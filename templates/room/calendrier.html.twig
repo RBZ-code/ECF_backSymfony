@@ -13,31 +13,35 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 locale: 'fr', 
-                initialView: 'timeGridWeek', 
-                slotMinTime: '08:00:00', 
-                slotMaxTime: '19:00:00',
-                slotDuration: '01:00:00',
+                initialView: 'dayGridMonth', 
                 headerToolbar: {
-                    left: 'prev next today',
+                    left: 'today',
                     center: 'title',
-                    right: 'timeGridWeek,timeGridDay'
+                    right: ''
                 },
                 contentHeight: "auto",
                 buttonText: {
-                    day: "Jour",
-                    week: "Semaine",
                     today: "Aujourd'hui",
                 },
                 events: [],
-                selectable: true, // Permettre à l'utilisateur de sélectionner des créneaux
+                selectable: true, 
+
+                selectAllow: function(selectInfo) {
+            var now = new Date();
+            var selectedDate = new Date(selectInfo.startStr);
+          
+            var dayOfWeek = selectedDate.getDay(); 
+
+            return dayOfWeek >= 1 && dayOfWeek <= 5 && now <= selectedDate; 
+        },
                 select: function(info) {
-                    // Redirection vers la route du formulaire avec les paramètres de date et heure sélectionnés
+                    // Redirection vers la route du formulaire 
                     var selectedDate = info.startStr;
-                    window.location.href = "{{ path('form_reservation') }}?selectedDate=" + selectedDate;
+                    window.location.href = "{{ path('heure_reservation', {id: room.id}) }}?selectedDate=" + selectedDate;
                 },
             });
 
-            calendar.render(); // Rendu du calendrier
+            calendar.render(); 
         });
     </script>
 {% endblock %}
