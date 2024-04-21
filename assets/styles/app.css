@@ -64,7 +64,8 @@ body {
 }
 
 .table-container {
-    margin: 20px;
+    margin-top: 30px;
+    border-radius: 10px;
 }
 
 .activeStatus {
@@ -87,4 +88,21 @@ body {
 
 .book-title-container {
     font-size: smaller;
+}
+
+.crud-container {
+    margin: 0 80px;
+}
+
+.adminForm-container {
+    padding: 20px 80px;
+}
+
+.backBtn-container {
+    margin: 10px 0;
+}
+
+.crudImg {
+    height: 100px;
+    width: auto;
 }
