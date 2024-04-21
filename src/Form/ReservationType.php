@@ -7,6 +7,7 @@ use App\Entity\Room;
 use App\Entity\Utilisateur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,12 +25,14 @@ class ReservationType extends AbstractType
             ->add('idRoom', EntityType::class, [
                 'class' => Room::class,
                 'choice_label' => 'id',
+                'disabled' => true,
             ])
             ->add('User', EntityType::class, [
                 'class' => Utilisateur::class,
                 'choice_label' => 'id',
-            ])
-        ;
+                'disabled' => true,
+                
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

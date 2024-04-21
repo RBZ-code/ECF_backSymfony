@@ -16,15 +16,29 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ReservationController extends AbstractController
 {
-    #[Route('/reservation', name: 'form_reservation')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+
+    #[Route('/heureReservation/{id}', name: 'heure_reservation')]
+    public function reservation(Room $room, Request $request, ReservationRepository $reservationRepository, EntityManagerInterface $entityManager): Response
     {
+        // Récupérer la date sélectionnée depuis la requête
+        $selectedDate = $request->query->get('selectedDate');
+        //dd($selectedDate);
+
+        
+        $currentDate = new \DateTime();
+        $currentHour = date('H');
+
+        // Créer une instance de l'entité Reservation
         $reservation = new Reservation();
+        // Créer le formulaire de réservation
         $form = $this->createForm(ReservationType::class, $reservation);
 
+        // Gérer la soumission du formulaire
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            
             
             $entityManager->persist($reservation);
             $entityManager->flush();
@@ -34,22 +48,6 @@ class ReservationController extends AbstractController
                 'reservation' => $reservation,
             ]);
         }
-
-        return $this->render('reservation/index.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    #[Route('/heureReservation/{id}', name: 'heure_reservation')]
-    public function reservation(Room $room, Request $request, ReservationRepository $reservationRepository): Response
-    {
-        // Récupérer la date sélectionnée depuis la requête
-        $selectedDate = $request->query->get('selectedDate');
-        //dd($selectedDate);
-
-        
-        $currentDate = new \DateTime();
-        $currentHour = date('H');
 
        
         $hoursOfDay = [];
@@ -82,7 +80,8 @@ class ReservationController extends AbstractController
             'selectedDate' => $selectedDate, 
             'room' => $room,
             'current_hour' => $currentHour,
-            'current_date' => $currentDate
+            'current_date' => $currentDate,
+            'form' => $form->createView(), // Passer le formulaire au template
         ]);
     }
 }
