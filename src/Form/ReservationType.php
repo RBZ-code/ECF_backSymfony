@@ -39,6 +39,7 @@ class ReservationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Reservation::class,
+            'roomId' => null, // Définition de l'option roomId avec une valeur par défaut
         ]);
     }
 }

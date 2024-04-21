@@ -9,6 +9,7 @@ use App\Entity\Reservation;
 use App\Form\ReservationType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ReservationRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,19 +19,27 @@ class ReservationController extends AbstractController
 {
 
     #[Route('/heureReservation/{id}', name: 'heure_reservation')]
-    public function reservation(Room $room, Request $request, ReservationRepository $reservationRepository, EntityManagerInterface $entityManager): Response
+    public function reservation(Room $room, Request $request, ReservationRepository $reservationRepository, EntityManagerInterface $entityManager, Security $security): Response
     {
         // Récupérer la date sélectionnée depuis la requête
         $selectedDate = $request->query->get('selectedDate');
         //dd($selectedDate);
 
-        
+
         $currentDate = new \DateTime();
         $currentHour = date('H');
 
         // Créer une instance de l'entité Reservation
         $reservation = new Reservation();
-        // Créer le formulaire de réservation
+        $user = $security->getUser();
+
+
+        // Préremplir le champ idRoom avec l'ID de la salle sélectionnée
+        $reservation->setIdRoom($room);
+        // Préremplir le champ idUser avec l'ID de l'utilisateur connecté
+        $reservation->setUser($user);
+
+        // Créer le formulaire de réservation avec l'instance de Reservation qui contient l'ID de la salle
         $form = $this->createForm(ReservationType::class, $reservation);
 
         // Gérer la soumission du formulaire
@@ -38,46 +47,45 @@ class ReservationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            
-            
+
+
             $entityManager->persist($reservation);
             $entityManager->flush();
 
-            
+
             return $this->render('reservation/confirmReservation.html.twig', [
                 'reservation' => $reservation,
             ]);
         }
 
-       
+
         $hoursOfDay = [];
         for ($hour = 8; $hour <= 18; $hour++) {
             $hoursOfDay[] = sprintf('%02d:00', $hour); // Formatage de l'heure
         }
 
-       
+
         $fullHours = [];
 
-        
+
         // Vérifier pour chaque heure si le total des réservations atteint la capacité de la salle
         foreach ($hoursOfDay as $hour) {
-            
+
             $selectedDateTime = new \DateTime($selectedDate . ' ' . $hour);
 
-            
+
             $totalReservationsAtHour = $reservationRepository->findReservationsByRoomAndHour($room, $selectedDateTime);
 
-            
+
             if ($totalReservationsAtHour >= $room->getCapacity()) {
                 $fullHours[] = $hour;
-
             }
         }
         //dd( $fullHours);
 
         return $this->render('reservation/heureReservation.html.twig', [
             'unavailable_hours' => $fullHours,
-            'selectedDate' => $selectedDate, 
+            'selectedDate' => $selectedDate,
             'room' => $room,
             'current_hour' => $currentHour,
             'current_date' => $currentDate,
