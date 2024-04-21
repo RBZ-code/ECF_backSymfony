@@ -18,10 +18,17 @@
                 slotMaxTime: '19:00:00',
                 slotDuration: '01:00:00',
                 headerToolbar: {
-                    left: 'prev,next today',
+                    left: 'prev next today',
                     center: 'title',
                     right: 'timeGridWeek,timeGridDay'
                 },
+                contentHeight: "auto",
+                buttonText: {
+                    day: "Jour",
+                    week: "Semaine",
+                    today: "Aujourd'hui",
+                },
+                events: [],
                 selectable: true, // Permettre à l'utilisateur de sélectionner des créneaux
                 select: function(info) {
                     // Redirection vers la route du formulaire avec les paramètres de date et heure sélectionnés
