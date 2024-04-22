@@ -22,7 +22,7 @@
 									<button class='btn btn-danger' style="cursor: not-allowed">
 										Indisponible
 									</button>
-								{% elseif current_date|date('Y-m-d') >= selectedDate|date('Y-m-d') %}
+								{% elseif current_date|date('Y-m-d') > selectedDate|date('Y-m-d') %}
 									<button class='btn btn-danger' style="cursor: not-allowed">
 										Indisponible
 									</button>
@@ -71,6 +71,7 @@
 $('.btn-reserve').click(function () { // alert('test')
 var hour = $(this).data('hour');
 var selectedDate = $(this).data('selected-date');
+console.log(selectedDate);
 
 $('#reservationModal').modal('show');
 

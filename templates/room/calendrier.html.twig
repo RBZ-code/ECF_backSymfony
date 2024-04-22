@@ -24,15 +24,17 @@
                     today: "Aujourd'hui",
                 },
                 events: [],
-                selectable: true, 
+                selectable: true,
 
                 selectAllow: function(selectInfo) {
             var now = new Date();
+            now.setDate(now.getDate() - 1);
             var selectedDate = new Date(selectInfo.startStr);
+            console.log(selectedDate);
           
             var dayOfWeek = selectedDate.getDay(); 
 
-            return dayOfWeek >= 1 && dayOfWeek <= 5 && now <= selectedDate; 
+            return dayOfWeek >= 1 && dayOfWeek <= 5 && now <= selectedDate ; 
         },
                 select: function(info) {
                     // Redirection vers la route du formulaire 

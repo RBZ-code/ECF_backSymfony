@@ -17,7 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ReservationController extends AbstractController
 {
-
     #[Route('/heureReservation/{id}', name: 'heure_reservation')]
     public function reservation(Room $room, Request $request, ReservationRepository $reservationRepository, EntityManagerInterface $entityManager, Security $security): Response
     {
@@ -25,57 +24,51 @@ class ReservationController extends AbstractController
         $selectedDate = $request->query->get('selectedDate');
         //dd($selectedDate);
 
-
         $currentDate = new \DateTime();
-        $currentHour = date('H');
+        $currentDate->modify('+ 2hour');
+        //dd($currentDate);
 
-        // Créer une instance de l'entité Reservation
+        $currentHour = (new \DateTime())->format('H');
+        $currentHour = (new \DateTime())->modify('+ 2hour')->format('H');
+        //dd($currentHour);
+
+
         $reservation = new Reservation();
         $user = $security->getUser();
+        //dd($user);
 
 
-        // Préremplir le champ idRoom avec l'ID de la salle sélectionnée
         $reservation->setIdRoom($room);
-        // Préremplir le champ idUser avec l'ID de l'utilisateur connecté
+
         $reservation->setUser($user);
 
-        // Créer le formulaire de réservation avec l'instance de Reservation qui contient l'ID de la salle
+
         $form = $this->createForm(ReservationType::class, $reservation);
 
-        // Gérer la soumission du formulaire
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
-
             $entityManager->persist($reservation);
             $entityManager->flush();
-
 
             return $this->render('reservation/confirmReservation.html.twig', [
                 'reservation' => $reservation,
             ]);
         }
 
-
         $hoursOfDay = [];
         for ($hour = 8; $hour <= 18; $hour++) {
             $hoursOfDay[] = sprintf('%02d:00', $hour); // Formatage de l'heure
         }
 
-
         $fullHours = [];
-
 
         // Vérifier pour chaque heure si le total des réservations atteint la capacité de la salle
         foreach ($hoursOfDay as $hour) {
-
             $selectedDateTime = new \DateTime($selectedDate . ' ' . $hour);
-
-
+            $selectedDateTime->modify('+ 3hour');
+            //dd($selectedDateTime);
             $totalReservationsAtHour = $reservationRepository->findReservationsByRoomAndHour($room, $selectedDateTime);
-
 
             if ($totalReservationsAtHour >= $room->getCapacity()) {
                 $fullHours[] = $hour;
@@ -92,4 +85,7 @@ class ReservationController extends AbstractController
             'form' => $form->createView(), // Passer le formulaire au template
         ]);
     }
+
+   
+    
 }
