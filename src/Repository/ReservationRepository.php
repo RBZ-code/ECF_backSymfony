@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use DateTime;
+use App\Entity\Room;
 use App\Entity\Reservation;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Reservation>
@@ -21,28 +23,21 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    //    /**
-    //     * @return Reservation[] Returns an array of Reservation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findReservationsByRoomAndHour(Room $room, DateTime $hour): int
+    {
+        $startHour = clone $hour;
+        $endHour = clone $hour;
+        $endHour->modify('+1 hour'); // Ajoute 1 heure à l'heure fournie pour obtenir l'heure de fin de l'intervalle
 
-    //    public function findOneBySomeField($value): ?Reservation
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return (int) $this->createQueryBuilder('r')
+            ->select('COUNT(r.id)')
+            ->where('r.idRoom = :room')
+            ->andWhere(':startHour < r.end_date') // Vérifie si l'heure de début de la réservation est après l'heure fournie
+            ->andWhere(':endHour > r.start_date') // Vérifie si l'heure de fin de la réservation est avant l'heure fournie
+            ->setParameter('room', $room)
+            ->setParameter('startHour', $startHour)
+            ->setParameter('endHour', $endHour)
+            ->getQuery()
+            ->getSingleScalarResult(); // Récupère le résultat sous forme de valeur scalaire (nombre total de réservations)
+    }
 }

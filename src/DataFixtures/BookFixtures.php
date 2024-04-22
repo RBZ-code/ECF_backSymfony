@@ -48,4 +48,5 @@ class BookFixtures extends Fixture implements DependentFixtureInterface
             ConditionFixtures::class, // Load ConditionFixtures before BookFixtures
         ];
     }
+
 }
