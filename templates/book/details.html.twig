@@ -8,7 +8,11 @@
 <div class="details-container">
         
     <div class="bookImg-container">
+    {% if book.imageName %}
+        <img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.title }}">
+    {% else %}
         <img src="{{ book.image }}" alt="Book Image">
+    {% endif %}
     </div>
     <div class="bookInfo-container">
         <h3 class="card-title">{{ book.title }}</h3>
@@ -44,8 +48,16 @@
             </button>
             {% else %}
             <a href="#" class="btn btn-success d-flex justify-content-center m-1 disabled">Pas disponible</a>
-            <p><em>Ce livre est prévu d'être disponible à réserver à partir de </em>: </p>
+            <p><em>Ce livre est prévu d'être disponible à réserver à partir de </em>: <strong>
+            {% if currentLoan.extensionDate is null %}
+            {# Later, consider adding twig/extensions allowing you to display the date in a more readable manner #}
+            {{ currentLoan.endDate|date('d-m-Y') }}
+            {% else %}
+            {{ currentLoan.extensionDate|date('d-m-Y') }}
+            </p>
             {% endif %}
+            {% endif %}
+            </strong>
         </div>
     </div>
         

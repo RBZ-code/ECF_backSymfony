@@ -19,8 +19,10 @@ body {
     min-height: 575px;
 }
 
-#bookImg {
+.bookImg {
     border-radius: 0;
+    height: 300px;
+    width: 200px;
 }
 
 .modalBookCard {
@@ -90,7 +92,7 @@ body {
     font-size: smaller;
 }
 
-.crud-container {
+.crud {
     margin: 0 80px;
 }
 
@@ -105,4 +107,12 @@ body {
 .crudImg {
     height: 100px;
     width: auto;
+}
+
+.page-container {
+    display: flex;
+}
+
+.indentedHeading {
+    margin-left: 80px;
 }

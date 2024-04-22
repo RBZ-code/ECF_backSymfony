@@ -16,7 +16,11 @@
             <div class="card bookCard p-1">
                 
                 <div class="image-container py-3 px-4">
-                    <img src="{{ book.image }}" class="card-img-top" id="bookImg" alt="Book Image">
+                {% if book.imageName %}
+                    <img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.title }}" class="bookImg">
+                {% else %}
+                    <img src="{{ book.image }}" class="card-img-top bookImg" alt="Book Image">
+                {% endif %}
                 </div>
                 <div class="book-title-container text-center pt-3">
                     <h5 class="card-title">{{ book.title }}</h5>
@@ -48,7 +52,6 @@
                     <button type="button" class="btn btn-success d-flex justify-content-center m-1" data-bs-toggle="modal" data-bs-target="#myModal{{ book.id }}">
                     Réserver
                     </button>
-                    {# <a href="{{ path('app_loan', { id:book.id }) }}" class="btn btn-success d-flex justify-content-center m-1">Réserver</a> #}
                     {% else %}
                     <a href="#" class="btn btn-success d-flex justify-content-center m-1 disabled">Pas disponible</a>
                     {% endif %}
