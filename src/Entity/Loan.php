@@ -32,7 +32,15 @@ class Loan
 
     #[ORM\ManyToOne(inversedBy: 'loanHistory')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $borrower = null;
+
+    private ?Utilisateur $borrower = null;
+
+    #[ORM\Column]
+    private ?bool $extension = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $extension_date = null;
+
 
     public function getId(): ?int
     {
@@ -99,15 +107,45 @@ class Loan
         return $this;
     }
 
-    public function getBorrower(): ?User
+
+    public function getBorrower(): ?Utilisateur
+
     {
         return $this->borrower;
     }
 
-    public function setBorrower(?User $borrower): static
+
+    public function setBorrower(?Utilisateur $borrower): static
+
     {
         $this->borrower = $borrower;
 
         return $this;
     }
+
+
+    public function isExtension(): ?bool
+    {
+        return $this->extension;
+    }
+
+    public function setExtension(bool $extension): static
+    {
+        $this->extension = $extension;
+
+        return $this;
+    }
+
+    public function getExtensionDate(): ?\DateTimeInterface
+    {
+        return $this->extension_date;
+    }
+
+    public function setExtensionDate(?\DateTimeInterface $extension_date): static
+    {
+        $this->extension_date = $extension_date;
+
+        return $this;
+    }
+
 }

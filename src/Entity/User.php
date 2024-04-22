@@ -62,11 +62,18 @@ class User
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $reservations;
 
+    /**
+     * @var Collection<int, Loan>
+     */
+    #[ORM\OneToMany(targetEntity: Loan::class, mappedBy: 'borrower', orphanRemoval: true)]
+    private Collection $loanHistory;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->loanHistory = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -266,6 +273,36 @@ class User
             // set the owning side to null (unless already changed)
             if ($reservation->getUser() === $this) {
                 $reservation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Loan>
+     */
+    public function getLoanHistory(): Collection
+    {
+        return $this->loanHistory;
+    }
+
+    public function addLoanHistory(Loan $loanHistory): static
+    {
+        if (!$this->loanHistory->contains($loanHistory)) {
+            $this->loanHistory->add($loanHistory);
+            $loanHistory->setBorrower($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoanHistory(Loan $loanHistory): static
+    {
+        if ($this->loanHistory->removeElement($loanHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($loanHistory->getBorrower() === $this) {
+                $loanHistory->setBorrower(null);
             }
         }
 
