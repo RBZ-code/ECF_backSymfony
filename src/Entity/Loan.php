@@ -26,6 +26,14 @@ class Loan
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $admin_comment = null;
 
+    #[ORM\ManyToOne(inversedBy: 'loans')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Book $book = null;
+
+    #[ORM\ManyToOne(inversedBy: 'loanHistory')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $borrower = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +83,30 @@ class Loan
     public function setAdminComment(?string $admin_comment): static
     {
         $this->admin_comment = $admin_comment;
+
+        return $this;
+    }
+
+    public function getBook(): ?Book
+    {
+        return $this->book;
+    }
+
+    public function setBook(?Book $book): static
+    {
+        $this->book = $book;
+
+        return $this;
+    }
+
+    public function getBorrower(): ?User
+    {
+        return $this->borrower;
+    }
+
+    public function setBorrower(?User $borrower): static
+    {
+        $this->borrower = $borrower;
 
         return $this;
     }

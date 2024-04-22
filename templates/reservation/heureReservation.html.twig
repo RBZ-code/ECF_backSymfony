@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Heures de réservation
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Heures de réservation disponibles</h1>
+		<div class="row">
+			{% for hour in 8..18 %}
+				<div class="col-md-4">
+					<div class="card mb-4">
+						<div class="card-body">
+							<h5 class="card-title">Réservation à
+								{{ hour }}h</h5>
+							<p class="card-text">
+								{% if unavailable_hours is not empty and hour ~ ':00' in unavailable_hours %}
+									<button class='btn btn-danger' style="cursor: not-allowed">
+										Complet
+									</button>
+								{% elseif current_hour >= hour and current_date|date('Y-m-d') == selectedDate|date('Y-m-d') %}
+									<button class='btn btn-danger' style="cursor: not-allowed">
+										Indisponible
+									</button>
+								{% elseif current_date|date('Y-m-d') > selectedDate|date('Y-m-d') %}
+									<button class='btn btn-danger' style="cursor: not-allowed">
+										Indisponible
+									</button>
+								{% else %}
+									<button class="btn btn-primary btn-reserve" data-hour="{{ hour }}" data-selected-date="{{ selectedDate|date('Y-m-d') }}">
+										Réserver
+									</button>
+								{% endif %}
+							</p>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="reservationModalLabel">Formulaire de Réservation</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					{{ form_start(form, {'attr':{'data-turbo':'false'}}) }}
+					{{ form_row(form.start_date, {'attr': {'readonly': 'readonly'}}) }}
+					{{ form_row(form.end_date, {'attr': {'readonly': 'readonly'}}) }}
+					<div style="display: none;">
+						{{ form_row(form.idRoom) }}
+						{{ form_row(form.User) }}
+					</div>
+					<button type="submit" class="btn btn-primary">Réserver</button>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+$('.btn-reserve').click(function () { // alert('test')
+var hour = $(this).data('hour');
+var selectedDate = $(this).data('selected-date');
+console.log(selectedDate);
+
+$('#reservationModal').modal('show');
+
+// Mettre à jour les champs du formulaire avec l'heure de début et la date
+$('#reservation_start_date').val(selectedDate + ' ' + hour + ':00');
+$('#reservation_end_date').val(selectedDate + ' ' + (
+hour + 1
+) + ':00');
+});
+});
+	</script>
+{% endblock %}
