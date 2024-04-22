@@ -52,7 +52,7 @@
 				<div class="modal-body">
 					{{ form_start(form, {'attr':{'data-turbo':'false'}}) }}
 					{{ form_row(form.start_date, {'attr': {'readonly': 'readonly'}}) }}
-					{{ form_row(form.end_date, {'attr': {'readonly': 'readonly'}}) }}
+					{{ form_row(form.end_date, ) }}
 					<div style="display: none;">
 						{{ form_row(form.idRoom) }}
 						{{ form_row(form.User) }}
