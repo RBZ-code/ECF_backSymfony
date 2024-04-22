@@ -11,12 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin/book')]
+#[Route('/admin')]
 class AdminBookController extends AbstractController
 {
-    #[Route('/', name: 'app_admin_book_index', methods: ['GET'])]
+    #[Route('/book', name: 'app_admin_book_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
+
+        $books = $bookRepository->findAll();
+
         return $this->render('admin_book/index.html.twig', [
             'books' => $bookRepository->findAll(),
         ]);
