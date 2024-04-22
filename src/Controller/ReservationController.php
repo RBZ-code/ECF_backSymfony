@@ -20,7 +20,7 @@ class ReservationController extends AbstractController
     #[Route('/heureReservation/{id}', name: 'heure_reservation')]
     public function reservation(Room $room, Request $request, ReservationRepository $reservationRepository, EntityManagerInterface $entityManager, Security $security): Response
     {
-        // Récupérer la date sélectionnée depuis la requête
+       
         $selectedDate = $request->query->get('selectedDate');
         //dd($selectedDate);
 
@@ -48,8 +48,19 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($reservation);
-            $entityManager->flush();
+
+            if ($reservation->getStartDate() < $currentDate) {
+                $this->addFlash('danger', 'La date de réservation doit être postérieure à la date du jour');
+                return $this->redirectToRoute('app_reservation');
+            }
+            if (!$user) {
+                $this->addFlash('danger', 'Vous devez être connecté pour réserver une salle');
+                return $this->redirectToRoute('app_login');
+            }
+            else{
+                $entityManager->persist($reservation);
+                $entityManager->flush();
+            }
 
             return $this->render('reservation/confirmReservation.html.twig', [
                 'reservation' => $reservation,
@@ -82,7 +93,7 @@ class ReservationController extends AbstractController
             'room' => $room,
             'current_hour' => $currentHour,
             'current_date' => $currentDate,
-            'form' => $form->createView(), // Passer le formulaire au template
+            'form' => $form->createView(), 
         ]);
     }
 
