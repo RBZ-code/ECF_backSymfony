@@ -48,8 +48,46 @@
         </div>
         </nav>
 
-		{% block body %}
-		{% endblock %}
+        <div class="adminContainer d-flex" style="min-height: 100vh;">
+            {% if is_granted('ROLE_ADMIN') %}
+            <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+                <span class="fs-4">Backoffice</span>
+                </a>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{{ path('app_admin_room_index') }}" class="nav-link active" aria-current="page">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#inventory"></use></svg>
+                    Rooms
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('app_admin_book_index') }}" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                    Books
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                    Orders
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                    Loans
+                    </a>
+                </li>
+                </ul>
+                <hr>
+              </div>
+            {% endif %}
+                    {% block body %}
+                    {% endblock %}
+        </div>
 	</body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js" integrity="sha256-dHUNnePy81fXq4D/wfu7cPsEIP7zl6MvLb84jtZf+UY=" crossorigin="anonymous"></script>
