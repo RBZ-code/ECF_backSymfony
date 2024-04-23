@@ -88,13 +88,13 @@ $('#reservationModal').modal('show');
 
 $('#reservation_start_date').val(selectedDate + ' ' + hour + ':00');
 
-// Génération des options de durée en fonction de l'heure
+
 var select = $('#choixEndDate');
 select.empty(); // Vider les options précédentes
 
-var maxDuration = 4; // Durée maximale autorisée
+var maxDuration = 4; 
 if (hour >= 16) {
-maxDuration = Math.min(maxDuration, 4 - (hour - 15)); // Réduire la durée pour les heures tardives
+maxDuration = Math.min(maxDuration, 4 - (hour - 15)); // Réduire la durée pour les heures tardives => No se !!
 }
 
 for (var i = 1; i <= maxDuration; i++) {

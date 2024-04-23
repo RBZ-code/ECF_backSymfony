@@ -45,9 +45,26 @@ class AdminRoomController extends AbstractController
     #[Route('/{id}', name: 'app_admin_room_show', methods: ['GET'])]
     public function show(Room $room): Response
     {
-        return $this->render('admin_room/show.html.twig', [
-            'room' => $room,
-        ]);
+        $reservations = $room->getReservations();
+
+    // Fetch related user information for each reservation
+    $reservationEvents = [];
+    foreach ($reservations as $reservation) {
+        $reservationEvent = [
+            'id' => $reservation->getId(), // Unique identifier for the event
+            'title' => $reservation->getUser() ? $reservation->getUser()->getFirstName() . ' ' . $reservation->getUser()->getLastName() : 'Unknown User', // Display user name
+            'start' => $reservation->getStartDate()->format('Y-m-d\TH:i:s'), // Start date and time in ISO 8601 format
+            'end' => $reservation->getEndDate()->format('Y-m-d\TH:i:s'), // End date and time in ISO 8601 format
+        ];
+        $reservationEvents[] = $reservationEvent;
+    }
+    // dd($reservationEvents);
+
+    return $this->render('admin_room/show.html.twig', [
+        'room' => $room,
+        'reservations' => $reservations,
+        'reservationEvents' => $reservationEvents, // Pass reservation event data to the template
+    ]);
     }
 
     #[Route('/{id}/edit', name: 'app_admin_room_edit', methods: ['GET', 'POST'])]
@@ -55,12 +72,8 @@ class AdminRoomController extends AbstractController
     {
         $form = $this->createForm(RoomType::class, $room);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            //dd($room->getEquipment());
-
-
-
             $entityManager->flush();
 
             return $this->redirectToRoute('app_admin_room_index', [], Response::HTTP_SEE_OTHER);
@@ -75,7 +88,7 @@ class AdminRoomController extends AbstractController
     #[Route('/{id}', name: 'app_admin_room_delete', methods: ['POST'])]
     public function delete(Request $request, Room $room, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->getPayload()->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $room->getId(), $request->getPayload()->get('_token'))) {
             $entityManager->remove($room);
             $entityManager->flush();
         }

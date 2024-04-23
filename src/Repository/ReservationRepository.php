@@ -28,13 +28,13 @@ class ReservationRepository extends ServiceEntityRepository
     {
         $startHour = clone $hour;
         $endHour = clone $hour;
-        $endHour->modify('+1 hour'); 
+        $endHour->modify('+1 hour');
 
         return (int) $this->createQueryBuilder('r')
             ->select('COUNT(r.id)')
             ->where('r.idRoom = :room')
-            ->andWhere(':startHour < r.end_date') 
-            ->andWhere(':endHour > r.start_date') 
+            ->andWhere(':startHour < r.end_date')
+            ->andWhere(':endHour > r.start_date')
             ->setParameter('room', $room)
             ->setParameter('startHour', $startHour)
             ->setParameter('endHour', $endHour)
@@ -43,16 +43,16 @@ class ReservationRepository extends ServiceEntityRepository
     }
 
     public function findReservationsByUserAndDate(Room $room, DateTime $selectedDate, Utilisateur $user): array
-{
-    return $this->createQueryBuilder('r')
-        ->select('r')
-        ->where('r.idRoom = :room')
-        ->andWhere('r.start_date = :selectedDate')
-        ->andWhere('r.User = :user') 
-        ->setParameter('room', $room)
-        ->setParameter('selectedDate', $selectedDate) 
-        ->setParameter('user', $user)
-        ->getQuery()
-        ->getResult();
-}
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r')
+            ->where('r.idRoom = :room')
+            ->andWhere('r.start_date < :selectedDate')
+            ->andWhere('r.User = :user')
+            ->setParameter('room', $room)
+            ->setParameter('selectedDate', $selectedDate)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
 }
