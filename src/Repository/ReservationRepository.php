@@ -5,6 +5,7 @@ namespace App\Repository;
 use DateTime;
 use App\Entity\Room;
 use App\Entity\Reservation;
+use App\Entity\Utilisateur;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -27,17 +28,31 @@ class ReservationRepository extends ServiceEntityRepository
     {
         $startHour = clone $hour;
         $endHour = clone $hour;
-        $endHour->modify('+1 hour'); // Ajoute 1 heure à l'heure fournie pour obtenir l'heure de fin de l'intervalle
+        $endHour->modify('+1 hour'); 
 
         return (int) $this->createQueryBuilder('r')
             ->select('COUNT(r.id)')
             ->where('r.idRoom = :room')
-            ->andWhere(':startHour < r.end_date') // Vérifie si l'heure de début de la réservation est après l'heure fournie
-            ->andWhere(':endHour > r.start_date') // Vérifie si l'heure de fin de la réservation est avant l'heure fournie
+            ->andWhere(':startHour < r.end_date') 
+            ->andWhere(':endHour > r.start_date') 
             ->setParameter('room', $room)
             ->setParameter('startHour', $startHour)
             ->setParameter('endHour', $endHour)
             ->getQuery()
-            ->getSingleScalarResult(); // Récupère le résultat sous forme de valeur scalaire (nombre total de réservations)
+            ->getSingleScalarResult(); // Récupère le résultat sous forme nombre total de réservations
     }
+
+    public function findReservationsByUserAndDate(Room $room, DateTime $selectedDate, Utilisateur $user): array
+{
+    return $this->createQueryBuilder('r')
+        ->select('r')
+        ->where('r.idRoom = :room')
+        ->andWhere('r.start_date = :selectedDate')
+        ->andWhere('r.User = :user') 
+        ->setParameter('room', $room)
+        ->setParameter('selectedDate', $selectedDate) 
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult();
+}
 }
