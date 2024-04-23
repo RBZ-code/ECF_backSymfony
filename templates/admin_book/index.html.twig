@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book index{% endblock %}
+
+{% block body %}
+    {# <div class="page-container"> #}
+
+        {# admin panel #}
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">Backoffice</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="#" class="nav-link active" aria-current="page">
+                <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#inventory"></use></svg>
+                Inventory
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_admin_book_new') }}" class="nav-link link-body-emphasis">
+                <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link link-body-emphasis">
+                <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                Orders
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link link-body-emphasis">
+                <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                Products
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link link-body-emphasis">
+                <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+                Customers
+                </a>
+            </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>mdo</strong>
+            </a>
+            <ul class="dropdown-menu text-small shadow">
+                <li><a class="dropdown-item" href="#">New project...</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+            </div>
+          </div>
+        {# end admin panel #}
+
+        <div class="crud-container">
+            <h1 class="my-3 indentedHeading">Inventory</h1>
+            <div class="crud">
+            <a href="{{ path('app_admin_book_new') }}" class="btn btn-primary">Create new</a>
+            <br>
+            <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Image</th>
+                            <th>Available</th>
+                            <th>Loan Information</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                            <tr>
+                                <td>{{ book.id }}</td>
+                                <td>{{ book.title }}</td>
+                                <td>
+                                    {% if book.imageName %}
+                                        <img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.title }}" class="crudImg">
+                                    {% else %}
+                                        <img src="{{ book.image }}" alt="{{ book.title }}" class="crudImg">
+                                    {% endif %}
+                                </td>
+                                <td>{{ book.available ? 'Yes' : 'No' }}</td>
+                                <td>
+                                    {% set loanStartDate = '' %}
+                                    {% set loanEndDate = '' %}
+                                    {% set loanExtensionDate = '' %}
+                                    {% for loan in book.getLoans() %}
+                                        {% if loan.getReturnDate() is null %}
+                                            {% set loanStartDate = loan.getStartDate()|date('Y-m-d') %}
+                                            {% if loan.getExtensionDate() is not null %}
+                                                {% set loanEndDate = loan.getExtensionDate()|date('Y-m-d') %}
+                                            {% else %}
+                                                {% set loanEndDate = loan.getEndDate()|date('Y-m-d') %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if loanStartDate %}
+                                        <strong>Start :</strong> {{ loanStartDate }}<br>
+                                        {% if loanEndDate %}
+                                            <strong>End :</strong> {{ loanEndDate }}
+                                        {% endif %}
+                                        <br>
+                                        <button type="button" class="btn btn-outline-success confirmBtn my-2">Confirmer restitution</button>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <a href="{{ path('app_admin_book_show', {'id': book.id}) }}">show</a>
+                                    <a href="{{ path('app_admin_book_edit', {'id': book.id}) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">No records found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+            
+        </div>
+    {# </div> #}
+{% endblock %}

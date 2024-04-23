@@ -5,41 +5,29 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Loan;
 use App\Repository\BookRepository;
+use App\Repository\LoanRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LoanController extends AbstractController
 {
-    #[Route('/loan/{id}', name: 'app_loan')]
-    public function index(int $id, BookRepository $bookRepo): Response
-    {
-        $book = $bookRepo->findOneBy(['id'=>$id]);
-
-        return $this->render('loan/index.html.twig', [
-            'book' => $book,
-        ]);
-    }
 
     #[Route('/confirm-reservation/{bookId}', name: 'app_confirm_reservation')]
     public function confirmReservation(int $bookId, Request $request, UserRepository $userRepo, BookRepository $bookRepo, EntityManagerInterface $entityManager): Response
     {
-        // $userId = $request->getSession()->get('user_id');
+        // Get the logged-in user using Symfony's getUser() method
+        $user = $this->getUser();
 
-        $userId = 1;
-
-        if (!$userId) {
+        if (!$user) {
             return new JsonResponse(['error' => 'Unauthorized access'], 401);
         }
 
-        $user = $userRepo->findOneBy(['id' => $userId]);
         $book = $bookRepo->findOneBy(['id' => $bookId]);
-
-        dd($user);
 
         if (!$book) {
             return new JsonResponse(['error' => 'Book not found'], 404);
@@ -50,14 +38,38 @@ class LoanController extends AbstractController
         $loan->setStartDate(new DateTime());
         $loan->setEndDate((new DateTime())->modify('+6 days'));
         $loan->setBook($book);
-        $loan->setBorrower($user);
+        $loan->setBorrower($user); // Set the logged-in user as the borrower
 
         // Persist the new loan record in the database
-        // $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($loan);
+
+        $book->setAvailable(false);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_library');
+    }
+
+    #[Route('/extend-loan/{loanId}', name: 'app_extend_loan')]
+    public function extendLoan(int $loanId, LoanRepository $loanRepo, EntityManagerInterface $entityManager): Response
+    {
+        $loan = $loanRepo->findOneBy(['id' => $loanId]);
+
+        if (!$loan) {
+            return new JsonResponse(['error' => 'Book not found'], 404);
+        }
+
+        $endDate = $loan->getEndDate();
+        $endDate->modify('+6 days');
+        // Question : Why didn't it work to just use setEndDate() to modify my end_date ??
+        $loan->setExtensionDate($endDate);
+        $loan->setExtension(true);
+
+        // dd($loan);
+
         $entityManager->persist($loan);
         $entityManager->flush();
 
-        return $this->redirectToRoute('index');
+        return $this->redirectToRoute('app_my_loans');
     }
-    
 }

@@ -25,4 +25,6 @@ class ConditionFixtures extends Fixture
 
         $manager->flush();
     }
+
 }
+
