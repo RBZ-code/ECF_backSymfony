@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center my-3">Book index</h1>
+
+    <div class="crud-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>YearPublished</th>
+                    <th>Image</th>
+                    <th>Available</th>
+                    <th>Rating</th>
+                    <th>Description</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.id }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.yearPublished }}</td>
+
+                    <td>
+                    {% if book.imageName %}
+                    <img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.title }}" class="crudImg">
+                    {% else %}
+                    <img src="{{ book.image }}" alt="{{ book.title }}" class="crudImg">
+                    {% endif %}
+                    </td>
+                    <td>{{ book.available ? 'Yes' : 'No' }}</td>
+                    <td>{{ book.rating }}</td>
+                    <td>{{ book.description }}</td>
+                    <td>
+                        <a href="{{ path('app_admin_book_show', {'id': book.id}) }}">show</a>
+                        <a href="{{ path('app_admin_book_edit', {'id': book.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ path('app_admin_book_new') }}">Create new</a>
+{% endblock %}

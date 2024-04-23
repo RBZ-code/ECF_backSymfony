@@ -1,5 +1,5 @@
 body {
-    background-color: skyblue;
+    background-color: white;
 }
 
 .library-container {
@@ -56,4 +56,53 @@ body {
 
 .fas {
     color: orange;
+}
+
+.loansBtn {
+    position: absolute;
+    right: 40px;
+}
+
+.table-container {
+    margin-top: 30px;
+    border-radius: 10px;
+}
+
+.activeStatus {
+    color: forestgreen;
+}
+
+.myLoansImages {
+    height: 60px;
+    width: auto;
+}
+
+#extensionModalImg {
+    height: 80px;
+    width: auto;
+}
+
+.extensionModalInfo {
+    gap: 15px;
+}
+
+.book-title-container {
+    font-size: smaller;
+}
+
+.crud-container {
+    margin: 0 80px;
+}
+
+.adminForm-container {
+    padding: 20px 80px;
+}
+
+.backBtn-container {
+    margin: 10px 0;
+}
+
+.crudImg {
+    height: 100px;
+    width: auto;
 }
