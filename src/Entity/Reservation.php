@@ -28,6 +28,7 @@ class Reservation
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Utilisateur $User = null;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -81,4 +82,5 @@ class Reservation
 
         return $this;
     }
+
 }
