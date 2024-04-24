@@ -22,11 +22,12 @@ class Reservation
 
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Room $idRoom = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Utilisateur $User = null;
+
 
     public function getId(): ?int
     {
@@ -81,4 +82,5 @@ class Reservation
 
         return $this;
     }
+
 }

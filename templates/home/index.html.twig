@@ -4,10 +4,16 @@
 {% endblock %}
 
 {% block body %}
+{% for flash_message in app.flashes('danger') %}
+		<div class="alert alert alert-success">
+			{{ flash_message }}
+		</div>
+	{% endfor %}
    
 {% endblock %}
 
+
 {% block javascripts %}
-    
+
 {% endblock %}
 
