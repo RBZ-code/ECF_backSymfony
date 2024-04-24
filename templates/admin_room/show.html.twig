@@ -86,7 +86,8 @@ daysOfWeek: [
 startTime: '8:00',
 endTime: '19:00'
 },
-events: {{ reservationEvents|json_encode|raw }}
+selectable: true,
+events: {{ reservationEvents|raw }}
 });
 
 calendar.render();
@@ -98,6 +99,7 @@ resolve();
 async function initializePage() {
 await initCalendar();
 
-}initializePage();
+}
+initializePage();
 	</script>
 {% endblock %}

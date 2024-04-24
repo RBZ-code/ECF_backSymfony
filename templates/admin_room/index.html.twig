@@ -5,6 +5,16 @@
 {% block body %}
     <div class="container">
         <h1 class="mt-4">Room Index</h1>
+        {% for flash_message in app.flashes('success') %}
+			<div class="alert alert alert-success">
+				{{ flash_message }}
+			</div>
+		{% endfor %}
+        {% for flash_message in app.flashes('danger') %}
+			<div class="alert alert alert-danger">
+				{{ flash_message }}
+			</div>
+		{% endfor %}
 
         <div class="row mt-4">
             <div class="col-md-12">

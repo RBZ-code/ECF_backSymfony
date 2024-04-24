@@ -33,9 +33,9 @@
                 <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
                 {% endif %}
                 <a class="nav-link" href="{{ path('app_library') }}">Livres</a>
+                <a class="nav-link" href="{{ path('app_room') }}">Reservation</a>
                 {% if app.user %}
                 <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
-                <a class="nav-link" href="{{ path('app_room') }}">Reservation</a>
                 <a class="nav-link" href="#">Profil</a>
                 <a class="nav-link loansBtn" href="{{ path('app_my_loans') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check" viewBox="0 0 16 16">

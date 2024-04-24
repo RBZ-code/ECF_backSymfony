@@ -15,13 +15,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReservationController extends AbstractController
 {
     #[Route('/heureReservation/{id}', name: 'heure_reservation')]
-    public function reservation(Room $room, Request $request, ReservationRepository $reservationRepository, EntityManagerInterface $entityManager, Security $security): Response
+    public function reservation(Room $room, Request $request, ReservationRepository $reservationRepository, EntityManagerInterface $entityManager, Security $security, TranslatorInterface $translator): Response
     {
 
+        if (!$this->isGranted('ROLE_USER')) {
+
+
+            $message = $translator->trans('You must be logged in to book a room');
+            $this->addFlash(
+                'danger',
+                $message
+            );
+            return $this->redirectToRoute('app_login');
+        }
         $selectedDate = $request->query->get('selectedDate');
         //dd($selectedDate);
 
@@ -37,6 +48,15 @@ class ReservationController extends AbstractController
         $reservation = new Reservation();
         $user = $security->getUser();
         //dd($user);
+        if (!$user) {
+
+            $message = $translator->trans('You must be logged in to book a room');
+            $this->addFlash(
+                'danger',
+                $message
+            );
+            return $this->redirectToRoute('app_login');
+        }
 
 
         $reservation->setIdRoom($room);
@@ -50,40 +70,53 @@ class ReservationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+
+            $selectedDateTime = $reservation->getStartDate();
+            $existingReservation = $reservationRepository->findExistingReservation($room, $selectedDateTime, $security->getUser());
+
+            if ($existingReservation) {
+                
+                $message = $translator->trans('You already have a reservation for this date and time.');
+                $this->addFlash('danger', $message);
+                return $this->redirectToRoute('heure_reservation', ['id' => $room->getId()]);
+            }
+
             if ($reservation->getStartDate() < $currentDate) {
-                $this->addFlash('danger', 'La date de réservation doit être postérieure à la date du jour');
+
+                $message = $translator->trans('The reservation date must be after the current date');
+                $this->addFlash('danger', $message);
                 return $this->redirectToRoute('app_reservation');
             }
 
-            if (!$user) {
-                $this->addFlash('danger', 'Vous devez être connecté pour réserver une salle');
-                return $this->redirectToRoute('app_login');
-            } else {
-             
-                $chosenDuration = $request->request->get('choixEndDate'); 
-                //dd($chosenDuration);
-                $startDate = $reservation->getStartDate();
-                $endDate = new \DateTime();
-                $endDate = clone $startDate;
-                //dd($endDate);
-                $endDate->modify('+' . $chosenDuration . ' hours');
-                //dd($endDate);
-                $reservation->setEndDate($endDate);
 
-                if ($endDate->format('H') >= 20) { 
-                    $this->addFlash('danger', 'La réservation ne peut pas se terminer après la fermeture de la salle (20h)');
-                    return $this->redirectToRoute('heure_reservation', ['id' => $room->getId()]);
-                }
 
-           
-                $entityManager->persist($reservation);
-                $entityManager->flush();
+            $chosenDuration = $request->request->get('choixEndDate');
+            //dd($chosenDuration);
+            $startDate = $reservation->getStartDate();
+            $endDate = new \DateTime();
+            $endDate = clone $startDate;
+            //dd($endDate);
+            $endDate->modify('+' . $chosenDuration . ' hours');
+            //dd($endDate);
+            $reservation->setEndDate($endDate);
 
-                return $this->render('reservation/confirmReservation.html.twig', [
-                    'reservation' => $reservation,
-                ]);
+            if ($endDate->format('H') >= 20) {
+
+
+                $message = $translator->trans('The reservation cannot end after the room closes (8:00 PM)');
+                $this->addFlash('danger', $message);
+                return $this->redirectToRoute('heure_reservation', ['id' => $room->getId()]);
             }
+
+
+            $entityManager->persist($reservation);
+            $entityManager->flush();
+
+            return $this->render('reservation/confirmReservation.html.twig', [
+                'reservation' => $reservation,
+            ]);
         }
+
 
 
 
@@ -101,11 +134,13 @@ class ReservationController extends AbstractController
         //dd($selectedDates); 
 
 
-        // Je n'arrive pas a retourner les réservations de l'utilisateur pour une date donnée (probleme lié à la date de réservation, probablement au format de la date)
+        // system Indien !
         $userReservations = $reservationRepository->findReservationsByUserAndDate($room, $selectedDates, $security->getUser());
-        //dd($userReservations);
+        // dd($selectedDates);
 
-        //dd($reservationRepository->findBy(['idRoom' => $room->getId()], ['start_date' => 'ASC'], ));
+        // dd($userReservations);
+
+
 
         $userHasReservations = [];
         foreach ($hoursOfDay as $hour) {
@@ -117,13 +152,13 @@ class ReservationController extends AbstractController
             foreach ($userReservations as $userReservation) {
                 if ($userReservation->getStartDate() <= $selectedDateTime && $userReservation->getEndDate() >= $selectedDateTime) {
                     $userHasReservations[$hour] = true;
-                    break; 
+                    break;
                 }
             }
         }
-        //dd($userHasReservations);
+        // dd($userHasReservations);
 
-        // Vérifier pour chaque heure si le total des réservations atteint la capacité de la salle
+        // Vérification pour chaque heure si le total des réservations atteint la capacité de la salle
         foreach ($hoursOfDay as $hour) {
             $selectedDateTime = new \DateTime($selectedDate . ' ' . $hour);
             // $selectedDateTime->modify('+ 2hour');
