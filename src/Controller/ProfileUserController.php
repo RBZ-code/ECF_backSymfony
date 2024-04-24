@@ -13,7 +13,8 @@ class ProfileUserController extends AbstractController
     public function index(): Response
     {
         $user = $this->getUser();
-        dd($user->getReservations());
+        
+        // dd($user->getReservations());
 
         return $this->render('profile_user/index.html.twig', [
             'mesResas' => 'ProfileUserController',
