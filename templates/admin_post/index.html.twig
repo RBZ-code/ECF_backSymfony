@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateur index{% endblock %}
+
+{% block body %}
+    <h1>Utilisateur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Password</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>DateOfBirth</th>
+                <th>City</th>
+                <th>PostalCode</th>
+                <th>PhoneNumber</th>
+                <th>Country</th>
+                <th>Street</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for utilisateur in utilisateurs %}
+            <tr>
+                <td>{{ utilisateur.id }}</td>
+                <td>{{ utilisateur.email }}</td>
+                <td>{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
+                <td>{{ utilisateur.password }}</td>
+                <td>{{ utilisateur.firstName }}</td>
+                <td>{{ utilisateur.lastName }}</td>
+                <td>{{ utilisateur.dateOfBirth ? utilisateur.dateOfBirth|date('Y-m-d') : '' }}</td>
+                <td>{{ utilisateur.city }}</td>
+                <td>{{ utilisateur.postalCode }}</td>
+                <td>{{ utilisateur.phoneNumber }}</td>
+                <td>{{ utilisateur.country }}</td>
+                <td>{{ utilisateur.street }}</td>
+                <td>
+                    <a href="{{ path('app_admin_post_show', {'id': utilisateur.id}) }}">show</a>
+                    <a href="{{ path('app_admin_post_edit', {'id': utilisateur.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_post_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Utilisateur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ utilisateur.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ utilisateur.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ utilisateur.password }}</td>
+            </tr>
+            <tr>
+                <th>FirstName</th>
+                <td>{{ utilisateur.firstName }}</td>
+            </tr>
+            <tr>
+                <th>LastName</th>
+                <td>{{ utilisateur.lastName }}</td>
+            </tr>
+            <tr>
+                <th>DateOfBirth</th>
+                <td>{{ utilisateur.dateOfBirth ? utilisateur.dateOfBirth|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ utilisateur.city }}</td>
+            </tr>
+            <tr>
+                <th>PostalCode</th>
+                <td>{{ utilisateur.postalCode }}</td>
+            </tr>
+            <tr>
+                <th>PhoneNumber</th>
+                <td>{{ utilisateur.phoneNumber }}</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>{{ utilisateur.country }}</td>
+            </tr>
+            <tr>
+                <th>Street</th>
+                <td>{{ utilisateur.street }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_utilisateur_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_utilisateur_edit', {'id': utilisateur.id}) }}">edit</a>
+
+    {{ include('admin_utilisateur/_delete_form.html.twig') }}
+{% endblock %}
