@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Utilisateur;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, ): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, TranslatorInterface  $translator): Response
     {
         $user = new Utilisateur();
         
@@ -33,13 +34,19 @@ class RegistrationController extends AbstractController
             $user->setRoles(['ROLE_USER']);
 
 
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('app_home');
+            try {
+                $entityManager->persist($user);
+                $entityManager->flush();
+                
+                $message = $translator->trans('Registration successful. You can now log in.');
+                $this->addFlash('success', $message);
+                return $this->redirectToRoute('app_home');
+            } catch (\Exception $e) {
+            
+                $message = $translator->trans('An error occurred during the registration. Please try again later.');
+                $this->addFlash('danger', $message);
+                return $this->redirectToRoute('app_register');
+            }
         }
 
         return $this->render('registration/register.html.twig', [

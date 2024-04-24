@@ -18,6 +18,11 @@ class AdminBookController extends AbstractController
     public function index(BookRepository $bookRepository): Response
     {
 
+  
+   if(!$this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
+
         $books = $bookRepository->findAll();
         $currentLoan = null;
 
@@ -43,6 +48,7 @@ class AdminBookController extends AbstractController
             }
         }
 
+
         return $this->render('admin_book/index.html.twig', [
             'books' => $books,
         ]);
@@ -51,6 +57,9 @@ class AdminBookController extends AbstractController
     #[Route('/new', name: 'app_admin_book_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if(!$this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -71,6 +80,9 @@ class AdminBookController extends AbstractController
     #[Route('/{id}', name: 'app_admin_book_show', methods: ['GET'])]
     public function show(Book $book): Response
     {
+        if(!$this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
         return $this->render('admin_book/show.html.twig', [
             'book' => $book,
         ]);
@@ -79,6 +91,9 @@ class AdminBookController extends AbstractController
     #[Route('/{id}/edit', name: 'app_admin_book_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Book $book, EntityManagerInterface $entityManager): Response
     {
+        if(!$this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
@@ -97,6 +112,9 @@ class AdminBookController extends AbstractController
     #[Route('/{id}', name: 'app_admin_book_delete', methods: ['POST'])]
     public function delete(Request $request, Book $book, EntityManagerInterface $entityManager): Response
     {
+        if(!$this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
         if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->getPayload()->get('_token'))) {
             $entityManager->remove($book);
             $entityManager->flush();

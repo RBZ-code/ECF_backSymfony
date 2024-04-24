@@ -12,7 +12,7 @@ class Room
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
     #[ORM\Column]
@@ -24,9 +24,7 @@ class Room
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    /**
-     * @var Collection<int, Equipment>
-     */
+  
     
 
     /**
@@ -38,14 +36,17 @@ class Room
     /**
      * @var Collection<int, Equipment>
      */
-    #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'room')]
+    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'rooms')]
     private Collection $equipment;
+
+   
 
     public function __construct()
     {
       
         $this->reservations = new ArrayCollection();
         $this->equipment = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -135,7 +136,6 @@ class Room
     {
         if (!$this->equipment->contains($equipment)) {
             $this->equipment->add($equipment);
-            $equipment->addRoom($this);
         }
 
         return $this;
@@ -143,10 +143,10 @@ class Room
 
     public function removeEquipment(Equipment $equipment): static
     {
-        if ($this->equipment->removeElement($equipment)) {
-            $equipment->removeRoom($this);
-        }
+        $this->equipment->removeElement($equipment);
 
         return $this;
     }
+
+   
 }

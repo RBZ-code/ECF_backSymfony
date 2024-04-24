@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Room;
 use App\Entity\Equipment;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -23,15 +22,6 @@ class EquipmentRepository extends ServiceEntityRepository
     }
 
 
-    public function findEquipmentsByRoom(Room $room): array
-    {
-        return $this->createQueryBuilder('e')
-            ->innerJoin('e.room', 'r')
-            ->where('r.id = :roomId')
-            ->setParameter('roomId', $room->getId())
-            ->getQuery()
-            ->getResult();
-    }
     //    /**
     //     * @return Equipment[] Returns an array of Equipment objects
     //     */

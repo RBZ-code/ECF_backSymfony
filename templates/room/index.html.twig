@@ -15,6 +15,10 @@
 			background: #F5F5F5;
 			padding: 2px 6px;
 		}
+        li {
+            list-style: none;
+            display: inline;
+        }
 	</style>
 
 	<div class="container">
@@ -47,7 +51,7 @@
 						<td>
 							<ul>
 								{% for equipment in equipmentsByRoom[availableRooms.id] %}
-									<li>{{ equipment.name}}</li>
+									<li>{{ equipment.name}},  </li>
 								{% endfor %}
 							</ul>
 						</td>
