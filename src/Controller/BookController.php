@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BookRepository;
+use App\Repository\LoanRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,14 +32,30 @@ class BookController extends AbstractController
     }
 
     #[Route('/details/{id}', name: 'details')]
-    public function details(int $id, BookRepository $bookRepo): Response
+    public function details(int $id, BookRepository $bookRepo, LoanRepository $loanRepo): Response
     {
         $book = $bookRepo->findOneBy(['id'=>$id]);
+        $loans = $book->getLoans();
+
+        $currentLoan = null;
+
+        foreach ($loans as $loan) {
+            if ($loan->getReturnDate() === null) {
+                $currentLoan = $loan;
+                break;
+            }
+        }
+
+        if ($currentLoan !== null && $loan->getExtensionDate() === null) {
+            $expectedReturnDate = $currentLoan->getEndDate();
+        } else if ($currentLoan !== null && $loan->getExtensionDate() !== null) {
+            $expectedReturnDate = $currentLoan->getExtensionDate();
+        }
         
 
         return $this->render('book/details.html.twig', [
             'book' => $book,
-
+            'currentLoan' => $currentLoan,
         ]);
     }
 }

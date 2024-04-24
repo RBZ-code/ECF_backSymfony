@@ -33,6 +33,11 @@ class LoanController extends AbstractController
             return new JsonResponse(['error' => 'Book not found'], 404);
         }
 
+        if (!$book->isAvailable()) {
+            $this->addFlash('warning', 'Ce livre est déjà réservé; il n\'est pas disponible.');
+            return $this->redirectToRoute('show_books');
+        }
+
         // Create a new Loan entity
         $loan = new Loan();
         $loan->setStartDate(new DateTime());
@@ -72,4 +77,36 @@ class LoanController extends AbstractController
 
         return $this->redirectToRoute('app_my_loans');
     }
+
+    #[Route('/confirm-return/{bookId}', name: 'app_confirm_return')]
+    public function confirmReturn(int $bookId, LoanRepository $loanRepo, BookRepository $bookRepo, EntityManagerInterface $entityManager): Response
+    {
+        $book = $bookRepo->findOneBy(['id' => $bookId]);
+        $loan = $book->getLoans();
+
+        if (!$book) {
+            return new JsonResponse(['error' => 'Book not found'], 404);
+        }
+
+        $loans = $loanRepo->findBy(['book' => $book]);
+
+        foreach ($loans as $loan) {
+            if ($loan->getReturnDate() === null) {
+                $returnDate = new DateTime();
+                $loan->setReturnDate($returnDate);
+    
+                // Update book availability to true
+                $book->setAvailable(true);
+    
+                // Persist changes for the loan and book entities
+                $entityManager->persist($loan);
+                $entityManager->persist($book);
+                $entityManager->flush();
+    
+                return $this->redirectToRoute('app_admin_book_index');
+            }
+        }
+        return new JsonResponse(['error' => 'No unreturned loan found for this book'], 404);
+    }
+
 }

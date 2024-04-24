@@ -17,11 +17,40 @@ class AdminBookController extends AbstractController
     #[Route('/', name: 'app_admin_book_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
-        if(!$this->isGranted('ROLE_ADMIN')){
+
+  
+   if(!$this->isGranted('ROLE_ADMIN')){
             return $this->redirectToRoute('app_home');
         }
+
+        $books = $bookRepository->findAll();
+        $currentLoan = null;
+
+        foreach ($books as $book) {
+            if (!$book->isAvailable()) {
+                $loans = $book->getLoans();
+                foreach ($loans as $loan) {
+                    if (!$loan->getReturnDate()) {
+                        $currentLoan = $loan;
+
+                        if ($currentLoan) {
+                            $endDate = $currentLoan->getEndDate();
+                            $extensionDate = $currentLoan->getExtensionDate();
+
+                            if ($extensionDate && new \DateTime() > $extensionDate) {
+                                $book->setOverdue(true);
+                            } else if (!$extensionDate && new \DateTime() > $endDate) {
+                                $book->setOverdue(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
         return $this->render('admin_book/index.html.twig', [
-            'books' => $bookRepository->findAll(),
+            'books' => $books,
         ]);
     }
 

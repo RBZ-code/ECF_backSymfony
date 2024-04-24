@@ -12,7 +12,11 @@
                     <div class="card modalBookCard p-1">
                             
                             <div class="image-container py-3 px-4">
+                            {% if book.imageName %}
+                                <img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.title }}">
+                            {% else %}
                                 <img src="{{ book.image }}" class="card-img-top" id="bookImg" alt="Book Image">
+                            {% endif %}
                             </div>
                             <div class="book-title-container text-center pt-3">
                                 <h5 class="card-title">{{ book.title }}</h5>
