@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Book{% endblock %}
+
+{% block body %}
+    <div class="adminForm-container">
+        <h1>Edit Book</h1>
+        <br>
+        {{ include('admin_book/_form.html.twig', {'button_label': 'Update'}) }}
+        <div class="backBtn-container"><a href="{{ path('app_admin_book_index') }}">back to list</a></div>
+        {{ include('admin_book/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

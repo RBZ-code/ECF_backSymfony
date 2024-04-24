@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookController!{% endblock %}
+
+{% block body %}
+
+
+
+<div class="library-container">
+<h1 class="mt-4 text-center">Tous nos livres</h1>
+
+    <div class="row">
+        {% for book in pagination %}
+
+        <div class="col-md-4 col-lg-3 my-4">
+            <div class="card bookCard p-1">
+                
+                <div class="image-container py-3 px-4">
+                {% if book.imageName %}
+                    <img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.title }}" class="bookImg">
+                {% else %}
+                    <img src="{{ book.image }}" class="card-img-top bookImg" alt="Book Image">
+                {% endif %}
+                </div>
+                <div class="book-title-container text-center pt-3">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.author }}</p>
+                </div>
+                <div class="star-rating d-flex justify-content-center align-items-center">
+                
+                    <div class="ratingNum-wrapper mx-2">{{ book.rating }} </div>
+        
+                    {% set rating = book.rating|default(0) %} {# Default to 0 if rating is not set #}
+                    {% set fullStars = rating|round %} {# Round rating to nearest whole number #}
+                    {% set halfStar = rating > fullStars %} {# Check if there's a half star #}
+
+                    {% for i in 1..5 %}
+                        {% if i <= fullStars %}
+                            <i class="fas fa-star"></i> {# Filled star icon #}
+                        {% elseif halfStar %}
+                            <i class="fas fa-star-half-alt"></i> {# Half-filled star icon #}
+                            {% set halfStar = false %} {# Only display one half star #}
+                        {% else %}
+                            <i class="far fa-star"></i> {# Empty star icon #}
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+                <div class="btn-container my-2">
+                    <a href="{{ path('details', { id:book.id }) }}" class="btn btn-primary d-flex justify-content-center m-1">Voir plus</a>
+                    {% if book.available == true %}
+                    <button type="button" class="btn btn-success d-flex justify-content-center m-1" data-bs-toggle="modal" data-bs-target="#myModal{{ book.id }}">
+                    Réserver
+                    </button>
+                    {% else %}
+                    <a href="#" class="btn btn-success d-flex justify-content-center m-1 disabled">Pas disponible</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% include 'components/_loanModal.html.twig' %}
+
+        {% endfor %}
+        <div class="pagination-container mb-4">{{ knp_pagination_render(pagination) }}</div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+<script>
+  document.addEventListener('load', () => {
+    const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+    const myInput = document.getElementById('myInput');
+
+    myModal.addEventListener('shown.bs.modal', () => {
+      myInput.focus();
+    });
+  });
+</script>
+{% endblock %}

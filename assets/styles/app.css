@@ -1,0 +1,136 @@
+body {
+    background-color: white;
+}
+
+.library-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.details-container {
+    display: flex;
+    width: 70%;
+    margin: 100px auto;
+    /* justify-content: center; */
+}
+
+.bookCard {
+    margin: -5px;
+    min-height: 575px;
+}
+
+.bookImg {
+    border-radius: 0;
+    height: 300px;
+    width: 200px;
+}
+
+.modalBookCard {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modalBookCard img {
+    height: 200px;
+    width: auto;
+    /* margin: 0 auto; */
+}
+
+.bookImg-container img {
+    height: 400px;
+}
+
+.bookInfo-container {
+    margin: 40px;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.fas {
+    color: orange;
+}
+
+.loansBtn {
+    position: absolute;
+    right: 40px;
+}
+
+.table-container {
+    margin-top: 30px;
+    border-radius: 10px;
+}
+
+.activeStatus {
+    color: forestgreen;
+}
+
+.myLoansImages {
+    height: 60px;
+    width: auto;
+}
+
+#extensionModalImg {
+    height: 80px;
+    width: auto;
+}
+
+.extensionModalInfo {
+    gap: 15px;
+}
+
+.book-title-container {
+    font-size: smaller;
+}
+
+.crud {
+    margin: 0 60px;
+}
+
+.adminForm-container {
+    width: 60%;
+    padding: 20px 80px;
+    margin: 0 auto;
+}
+
+.backBtn-container {
+    margin: 10px 0;
+}
+
+.crudImg {
+    height: 90px;
+    width: auto;
+}
+
+.page-container {
+    display: flex;
+}
+
+.indentedHeading {
+    margin-left: 60px;
+}
+
+.adminMain-container {
+    width: 100%;
+    margin: 40px auto;
+}
+
+.headingAndBtn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.headingAndBtn a {
+    height:fit-content;
+    margin: 20px 60px 0 0;
+}
