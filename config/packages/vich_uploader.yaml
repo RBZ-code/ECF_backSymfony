@@ -1,3 +1,4 @@
+# config/packages/vich_uploader.yaml or app/config/config.yml
 vich_uploader:
     db_driver: orm
 
@@ -5,7 +6,7 @@ vich_uploader:
         type: attribute
 
     mappings:
-        books:
-            uri_prefix: /images/books
-            upload_destination: '%kernel.project_dir%/public/images/books'
+        utilisateur:
+            uri_prefix: /images/utilisateur
+            upload_destination: '%kernel.project_dir%/public/images/utilisateur'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
