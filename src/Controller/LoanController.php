@@ -18,7 +18,7 @@ class LoanController extends AbstractController
 {
 
     #[Route('/confirm-reservation/{bookId}', name: 'app_confirm_reservation')]
-    public function confirmReservation(int $bookId, Request $request, UserRepository $userRepo, BookRepository $bookRepo, EntityManagerInterface $entityManager): Response
+    public function confirmReservation(int $bookId, Request $request, UserRepository $userRepo, BookRepository $bookRepo, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
         // Get the logged-in user using Symfony's getUser() method
         $user = $this->getUser();
@@ -34,7 +34,8 @@ class LoanController extends AbstractController
         }
 
         if (!$book->isAvailable()) {
-            $this->addFlash('warning', 'Ce livre est déjà réservé; il n\'est pas disponible.');
+            $message = $translator->trans('This book is already reserved and is not available.');
+            $this->addFlash('warning', $message);
             return $this->redirectToRoute('show_books');
         }
 

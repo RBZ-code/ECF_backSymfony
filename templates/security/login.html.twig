@@ -7,7 +7,7 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Please sign in</div>
+                    <div class="card-header">{% trans %}Please sign in{% endtrans %}</div>
                     <div class="card-body">
                         {% for flash_message in app.flashes('danger') %}
                             <div class="alert alert-danger">
@@ -22,7 +22,7 @@
 
                             {% if app.user %}
                                 <div class="mb-3">
-                                    You are logged in as
+                                    {% trans %}You are logged in as{% endtrans %}
                                     {{ app.user.userIdentifier }},
                                     <a href="{{ path('app_logout') }}">Logout</a>
                                 </div>
@@ -41,10 +41,10 @@
 
                             <div class="mb-3 form-check">
                                 <input type="checkbox" name="_remember_me" class="form-check-input" id="rememberMe">
-                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                                <label class="form-check-label" for="rememberMe">{% trans %}Remember me{% endtrans %}</label>
                             </div>
 
-                            <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+                            <button class="btn btn-lg btn-primary" type="submit">{% trans %}Sign in{% endtrans %}</button>
                         </form>
                     </div>
                 </div>

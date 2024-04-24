@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{% trans %}Register{% endtrans %}{% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Register</div>
+                    <div class="card-header">{% trans %}Register{% endtrans %}</div>
                     <div class="card-body">
                         {{ form_errors(registrationForm) }}
                         {{ form_start(registrationForm) }}
@@ -47,9 +47,9 @@
                             </div>
                             <div class="form-check mb-3">
                                 {{ form_row(registrationForm.agreeTerms, { 'label': 'Agree to Terms', 'attr': {'class': 'form-check-input'} }) }}
-                                <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">I agree to the terms and conditions</label>
+                                <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">{% trans %}I agree to the terms and conditions{% endtrans %}</label>
                             </div>
-                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="submit" class="btn btn-primary">{% trans %}Register{% endtrans %}</button>
                         {{ form_end(registrationForm) }}
                     </div>
                 </div>

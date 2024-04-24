@@ -12,37 +12,37 @@
                     <td>{{ book.id }}</td>
                 </tr>
                 <tr>
-                    <th>Title</th>
+                    <th>{% trans %}Title{% endtrans %}</th>
                     <td>{{ book.title }}</td>
                 </tr>
                 <tr>
-                    <th>Author</th>
+                    <th>{% trans %}Author{% endtrans %}</th>
                     <td>{{ book.author }}</td>
                 </tr>
                 <tr>
-                    <th>YearPublished</th>
+                    <th>{% trans %}YearPublished{% endtrans %}</th>
                     <td>{{ book.yearPublished }}</td>
                 </tr>
                 <tr>
-                    <th>Image</th>
+                    <th>{% trans %}Image{% endtrans %}</th>
                     <td>{{ book.image }}</td>
                 </tr>
                 <tr>
-                    <th>Available</th>
+                    <th>{% trans %}Available{% endtrans %}</th>
                     <td>{{ book.available ? 'Yes' : 'No' }}</td>
                 </tr>
                 <tr>
-                    <th>Rating</th>
+                    <th>{% trans %}Rating{% endtrans %}</th>
                     <td>{{ book.rating }}</td>
                 </tr>
                 <tr>
-                    <th>Description</th>
+                    <th>{% trans %}Description{% endtrans %}</th>
                     <td>{{ book.description }}</td>
                 </tr>
             </tbody>
         </table>
-        <a href="{{ path('app_admin_book_index') }}">back to list</a>
-        <a href="{{ path('app_admin_book_edit', {'id': book.id}) }}">edit</a>
+        <a href="{{ path('app_admin_book_index') }}">{% trans %}back to list{% endtrans %}</a>
+        <a href="{{ path('app_admin_book_edit', {'id': book.id}) }}">{% trans %}edit{% endtrans %}</a>
     </div>
 
     {{ include('admin_book/_delete_form.html.twig') }}

@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container">
-        <h1 class="mt-4">Edit Room</h1>
+        <h1 class="mt-4">{% trans %}Edit Room{% endtrans %}</h1>
 
         <div class="row mt-4">
             <div class="col-md-6">
@@ -14,7 +14,7 @@
 
         <div class="row mt-4">
             <div class="col-md-6">
-                <a href="{{ path('app_admin_room_index') }}" class="btn btn-secondary">Back to List</a>
+                <a href="{{ path('app_admin_room_index') }}" class="btn btn-secondary">{% trans %}Back to List{% endtrans %}</a>
             </div>
         </div>
 

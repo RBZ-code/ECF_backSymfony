@@ -11,15 +11,15 @@
                 <th>Id</th>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>Password</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>DateOfBirth</th>
-                <th>City</th>
-                <th>PostalCode</th>
-                <th>PhoneNumber</th>
-                <th>Country</th>
-                <th>Street</th>
+                <th>{% trans %}Password{% endtrans %}</th>
+                <th>{% trans %}FirstName{% endtrans %}</th>
+                <th>{% trans %}LastName{% endtrans %}</th>
+                <th>{% trans %}DateOfBirth{% endtrans %}</th>
+                <th>{% trans %}City{% endtrans %}</th>
+                <th>{% trans %}PostalCode{% endtrans %}</th>
+                <th>{% trans %}PhoneNumber{% endtrans %}</th>
+                <th>{% trans %}Country{% endtrans %}</th>
+                <th>{% trans %}Street{% endtrans %}</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -39,17 +39,17 @@
                 <td>{{ utilisateur.country }}</td>
                 <td>{{ utilisateur.street }}</td>
                 <td>
-                    <a href="{{ path('app_admin_post_show', {'id': utilisateur.id}) }}">show</a>
-                    <a href="{{ path('app_admin_post_edit', {'id': utilisateur.id}) }}">edit</a>
+                    <a href="{{ path('app_admin_post_show', {'id': utilisateur.id}) }}">{% trans %}show{% endtrans %}</a>
+                    <a href="{{ path('app_admin_post_edit', {'id': utilisateur.id}) }}">{% trans %}edit{% endtrans %}</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="13">no records found</td>
+                <td colspan="13">{% trans %}no records found{% endtrans %}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_admin_post_new') }}">Create new</a>
+    <a href="{{ path('app_admin_post_new') }}">{% trans %}Create new{% endtrans %}</a>
 {% endblock %}

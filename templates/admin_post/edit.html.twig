@@ -3,11 +3,11 @@
 {% block title %}Edit Utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Edit Utilisateur</h1>
+    <h1>{% trans %}Edit Utilisateur{% endtrans %}</h1>
 
     {{ include('admin_post/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_admin_post_index') }}">back to list</a>
+    <a href="{{ path('app_admin_post_index') }}">{% trans %}back to list{% endtrans %}</a>
 
     {{ include('admin_post/_delete_form.html.twig') }}
 {% endblock %}
