@@ -136,9 +136,11 @@ Member: Membre
 Submit: Envoyer
 'This book has no recorded loan information.': 'Ce livre ne contient aucune information de prêt enregistrée.'
 'My Reservations': 'Mes réservations'
-'Edit Profil': '
-Modifier le profil'
+'Edit Profil': ' Modifier le profil'
 Users: Utilisateurs
-Logout: Se déconnecter
+Logout: 'Se déconnecter'
 Returned: Revenu
-
+Book: Livre
+'Book Details': 'Details du livre'
+à: à
+'Loan History': 'Historique des réservations'

@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Book
+{% block title %}{% trans %}Book{% endtrans %}
 {% endblock %}
 
 {% block body %}
 	<div class="crud-container p-5">
-		<h1>Book Details</h1>
+		<h1>{% trans %}Book Details{% endtrans %}</h1>
 		<table class="table">
 			<tbody>
 				<tr>
@@ -58,7 +58,7 @@
 
 		<div class="loanHistory-container">
 
-			<h3 class="text-center py-2" style="background-color:cornsilk">Loan History</h3>
+			<h3 class="text-center py-2" style="background-color:cornsilk">{% trans %}Loan History{% endtrans %}</h3>
 			<br>
 			<table class="table">
 				<thead>
