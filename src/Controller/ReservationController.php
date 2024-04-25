@@ -150,7 +150,7 @@ class ReservationController extends AbstractController
 
             // Vérifier si l'une des réservations de l'utilisateur chevauche cette heure
             foreach ($userReservations as $userReservation) {
-                if ($userReservation->getStartDate() <= $selectedDateTime && $userReservation->getEndDate() >= $selectedDateTime) {
+                if ($userReservation->getStartDate() <= $selectedDateTime && $userReservation->getEndDate() > $selectedDateTime) {
                     $userHasReservations[$hour] = true;
                     break;
                 }

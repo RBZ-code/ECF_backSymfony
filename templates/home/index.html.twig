@@ -1,19 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
-{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
-{% for flash_message in app.flashes('danger') %}
-		<div class="alert alert alert-success">
-			{{ flash_message }}
-		</div>
-	{% endfor %}
-   
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="text-center mt-5">
+                {% if welcomeMessage %}
+                    <h1>{{ welcomeMessage }}</h1>
+                {% else %}
+                    <h1>Welcome!</h1>
+                {% endif %}
+                {% for flash_message in app.flashes('danger') %}
+                    <div class="alert alert-danger mt-3" role="alert">
+                        {{ flash_message }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
-
-
-{% block javascripts %}
-
-{% endblock %}
-

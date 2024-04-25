@@ -40,6 +40,7 @@ class RegistrationController extends AbstractController
                 
                 $message = $translator->trans('Registration successful. You can now log in.');
                 $this->addFlash('success', $message);
+                
                 return $this->redirectToRoute('app_home');
             } catch (\Exception $e) {
             

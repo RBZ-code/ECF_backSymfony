@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoanController extends AbstractController
 {
@@ -44,7 +45,8 @@ class LoanController extends AbstractController
         }
 
         if (!$book->isAvailable()) {
-            $this->addFlash('warning', 'Ce livre est déjà réservé; il n\'est pas disponible.');
+            $message = $translator->trans('This book is already reserved and is not available.');
+            $this->addFlash('warning', $message);
             return $this->redirectToRoute('show_books');
         }
 
