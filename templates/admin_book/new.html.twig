@@ -6,6 +6,6 @@
     <div class="adminForm-container">
         <h1>{% trans %}Create new Book{% endtrans %}</h1>
         {{ include('admin_book/_form.html.twig') }}
-        <a href="{{ path('app_admin_book_index') }}">{% trans %}back to list{% endtrans %}</a>
+        <a href="{{ path('app_admin_book_index') }}" class="btn btn-secondary">{% trans %}back to list{% endtrans %}</a>
     </div>
 {% endblock %}
