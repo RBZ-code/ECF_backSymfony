@@ -97,6 +97,10 @@ body {
     margin: 0 60px;
 }
 
+.crud-container {
+    width: 1200px;
+}
+
 .adminForm-container {
     width: 60%;
     padding: 20px 80px;
@@ -134,3 +138,12 @@ body {
     height:fit-content;
     margin: 20px 60px 0 0;
 }
+
+.btn.active {
+    background-color: #6f7780; /* Example active button background color */
+    color: #ffffff; /* Example active button text color */
+}
+
+/* .adminComment {
+    
+} */

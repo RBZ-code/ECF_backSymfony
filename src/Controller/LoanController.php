@@ -12,15 +12,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LoanController extends AbstractController
 {
 
     #[Route('/confirm-reservation/{bookId}', name: 'app_confirm_reservation')]
-    public function confirmReservation(int $bookId, Request $request, UserRepository $userRepo, BookRepository $bookRepo, EntityManagerInterface $entityManager): Response
+    public function confirmReservation(int $bookId, Request $request, UserRepository $userRepo, BookRepository $bookRepo, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
-        // Get the logged-in user using Symfony's getUser() method
+        if (!$this->isGranted('ROLE_USER')) {
+
+            $message = $translator->trans('You must be logged in to reserve a book.');
+            $this->addFlash(
+                'danger',
+                $message
+            );
+            return $this->redirectToRoute('app_login');
+        }
+
         $user = $this->getUser();
 
         if (!$user) {
@@ -58,6 +68,10 @@ class LoanController extends AbstractController
     #[Route('/extend-loan/{loanId}', name: 'app_extend_loan')]
     public function extendLoan(int $loanId, LoanRepository $loanRepo, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $loan = $loanRepo->findOneBy(['id' => $loanId]);
 
         if (!$loan) {
@@ -81,6 +95,10 @@ class LoanController extends AbstractController
     #[Route('/confirm-return/{bookId}', name: 'app_confirm_return')]
     public function confirmReturn(int $bookId, LoanRepository $loanRepo, BookRepository $bookRepo, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $book = $bookRepo->findOneBy(['id' => $bookId]);
         $loan = $book->getLoans();
 
@@ -97,6 +115,7 @@ class LoanController extends AbstractController
     
                 // Update book availability to true
                 $book->setAvailable(true);
+                $book->setOverdue(false);
     
                 // Persist changes for the loan and book entities
                 $entityManager->persist($loan);
