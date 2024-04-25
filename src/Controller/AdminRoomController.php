@@ -25,6 +25,7 @@ class AdminRoomController extends AbstractController
         }
         return $this->render('admin_room/index.html.twig', [
             'rooms' => $roomRepository->findAll(),
+
         ]);
     }
 
@@ -55,32 +56,36 @@ class AdminRoomController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_admin_room_show', methods: ['GET'])]
-    public function show(Room $room): Response
+    public function show(RoomRepository $roomrepo, Room $room ): Response
     {
 
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_home');
-        }
-        $reservations = $room->getReservations();
+        // if (!$this->isGranted('ROLE_ADMIN')) {
+        //     return $this->redirectToRoute('app_home');
+        // }
 
-        $reservationEvents = [];
-        foreach ($reservations as $reservation) {
-            $reservationEvent = [
-                'id' => $reservation->getId(),
-                'title' => $reservation->getUser() ? $reservation->getUser()->getFirstName() . ' ' . $reservation->getUser()->getLastName() : 'Unknown User',
-                'start' => $reservation->getStartDate()->format('Y-m-d\TH:i:s'),
-                'end' => $reservation->getEndDate()->format('Y-m-d\TH:i:s'),
-            ];
-            $reservationEvents[] = $reservationEvent;
-        }
-        // dd($reservationEvents);
+        //  $reservations = $room->getReservations();
 
-        $data = json_encode($reservationEvents);
+        // $reservationEvents = [];
+        // foreach ($reservations as $reservation) {
+        //     $reservationEvent = [
+        //         'id' => $reservation->getId(),
+        //         'title' => $reservation->getUser() ? $reservation->getUser()->getFirstName() . ' ' . $reservation->getUser()->getLastName() : 'Unknown User',
+        //         'start' => $reservation->getStartDate()->format('Y-m-d\TH:i:s'),
+        //         'end' => $reservation->getEndDate()->format('Y-m-d\TH:i:s'),
+        //     ];
+        //     $reservationEvents[] = $reservationEvent;
+        // }
+        // // dd($reservationEvents);
+
+
+        // $data = json_encode($reservationEvents);
+ 
 
         return $this->render('admin_room/show.html.twig', [
+   
             'room' => $room,
-            'reservations' => $reservations,
-            'reservationEvents' => $data, // Pass reservation event data to the template
+            // 'reservations' => $reservations,
+            // 'reservationEvents' => $data, // Pass reservation event data to the template
         ]);
     }
 
@@ -109,7 +114,7 @@ class AdminRoomController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_admin_room_delete', methods: ['POST'])]
-    public function delete(Request $request, Room $room, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Room $room, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
 
 
@@ -122,7 +127,9 @@ class AdminRoomController extends AbstractController
         
         foreach ($reservations as $reservation) {
             if ($reservation->getStartDate() > new \DateTime()) {
-                $this->addFlash('danger', 'There are reservations linked to this room. Delete them first.');
+
+                $message = $translator->trans('There are reservations linked to this room. Delete them first.');
+                $this->addFlash('danger', $message);
                 //dd($reservation);
                 return $this->redirectToRoute('app_admin_room_index', [], Response::HTTP_SEE_OTHER);
             }
@@ -135,7 +142,8 @@ class AdminRoomController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $room->getId(), $request->getPayload()->get('_token'))) {
             $entityManager->remove($room);
             $entityManager->flush();
-            $this->addFlash('danger', 'Room successfully deleted.');
+            $message = $translator->trans('Room successfully deleted.');
+            $this->addFlash('danger', $message);
             return $this->redirectToRoute('app_admin_room_index', [], Response::HTTP_SEE_OTHER);
         }
 

@@ -44,15 +44,15 @@
                             </div>
                             <br>
                             <p class="mx-5">
-                                Chaque emprunt de livre est valable pendant 6 jours complets, y compris les week-ends et les jours fériés, à partir du moment où le livre est réservé.
+                                {% trans %}Each book loan is valid for 6 full days, including weekends and holidays, from the time the book is reserved.
 
-                                Il est possible de demander une prolongation unique de l'emprunt du livre avant la date de retour, ce qui ajoute 6 jours supplémentaires (une seule prolongation peut être demandée pour le livre avant son retour).
+                                It is possible to request a one-time extension to borrow the book before the return date, which adds an additional 6 days (only one extension can be requested for the book before its return).{% endtrans %}
                             </p>
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <a href="{{ path('app_confirm_reservation', { 'bookId': book.id }) }}" class="btn btn-primary">Confirmer Réservation</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    <a href="{{ path('app_confirm_reservation', { 'bookId': book.id }) }}" class="btn btn-primary">{% trans %}Confirm Reservation{% endtrans %}</a>
 
                 </div>
             </div>

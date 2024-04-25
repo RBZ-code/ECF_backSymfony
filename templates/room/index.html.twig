@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RoomController!
+{% block title %}
+	{% trans %}Room{% endtrans %}!
 {% endblock %}
 
 {% block body %}
@@ -15,33 +16,34 @@
 			background: #F5F5F5;
 			padding: 2px 6px;
 		}
-        li {
-            list-style: none;
-            display: inline;
-        }
+		li {
+			list-style: none;
+			display: inline;
+		}
 	</style>
 
 	<div class="container">
-		<h1>Il y a
+		<h1>{% trans %}There are{% endtrans %}
 			{{ availableRooms|length }}
-			salles disponible !</h1>
+			{% trans %}rooms available{% endtrans %}
+			!</h1>
 
 		<table class="table">
 			<thead>
 				<tr>
-					
-					<th scope="col">Name</th>
-					<th scope="col">Capacity</th>
-					<th scope="col">Available</th>
-					<th scope="col">Equipements</th>
-					<th scope="col">Reserver</th>
+
+					<th scope="col">{% trans %}Name{% endtrans %}</th>
+					<th scope="col">{% trans %}Capacity{% endtrans %}</th>
+					<th scope="col">{% trans %}Available{% endtrans %}</th>
+					<th scope="col">{% trans %}Equipements{% endtrans %}</th>
+					<th scope="col">{% trans %}To book{% endtrans %}</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for availableRooms in availableRooms %}
 					<tr>
 						<th scope="row">{{availableRooms.name}}</th>
-						
+
 						<td>{{availableRooms.capacity}}</td>
 						{% if availableRooms.available == 1 %}
 							<td>✅</td>
@@ -51,12 +53,14 @@
 						<td>
 							<ul>
 								{% for equipment in equipmentsByRoom[availableRooms.id] %}
-									<li>{{ equipment.name}},  </li>
+									<li>{{ equipment.name}},
+									</li>
 								{% endfor %}
 							</ul>
 						</td>
 						<td>
-							 <a href="{{ path('app_reservation', {id: availableRooms.id}) }}" class='btn btn-primary'>Réserver</a>
+							<a href="{{ path('app_reservation', {id: availableRooms.id}) }}" class='btn btn-primary'>
+								{% trans %}To book{% endtrans %}</a>
 						</td>
 					{% endfor %}
 				</tbody>

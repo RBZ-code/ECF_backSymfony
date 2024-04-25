@@ -31,6 +31,7 @@ class Room
      * @var Collection<int, Reservation>
      */
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'idRoom')]
+    // #[ORM\OrderBy(['enddate' => 'ASC'])]
     private Collection $reservations;
 
     /**

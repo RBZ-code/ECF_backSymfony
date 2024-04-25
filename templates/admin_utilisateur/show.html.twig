@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}User{% endtrans %}{% endblock %}
+
+{% block body %}
+    <h1>{% trans %}User{% endtrans %}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ utilisateur.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ utilisateur.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Password{% endtrans %}</th>
+                <td>{{ utilisateur.password }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}FirstName{% endtrans %}</th>
+                <td>{{ utilisateur.firstName }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}LastName{% endtrans %}</th>
+                <td>{{ utilisateur.lastName }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}DateOfBirth{% endtrans %}</th>
+                <td>{{ utilisateur.dateOfBirth ? utilisateur.dateOfBirth|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}City{% endtrans %}</th>
+                <td>{{ utilisateur.city }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}PostalCode{% endtrans %}</th>
+                <td>{{ utilisateur.postalCode }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}PhoneNumber{% endtrans %}</th>
+                <td>{{ utilisateur.phoneNumber }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Country{% endtrans %}</th>
+                <td>{{ utilisateur.country }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Street{% endtrans %}</th>
+                <td>{{ utilisateur.street }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_utilisateur_index') }}">{% trans %}back to list{% endtrans %}</a>
+
+    <a href="{{ path('app_admin_utilisateur_edit', {'id': utilisateur.id}) }}">{% trans %}edit{% endtrans %}</a>
+
+    {{ include('admin_utilisateur/_delete_form.html.twig') }}
+{% endblock %}

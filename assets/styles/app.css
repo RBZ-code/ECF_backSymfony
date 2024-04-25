@@ -61,10 +61,10 @@ body {
     color: orange;
 }
 
-.loansBtn {
+/* .loansBtn {
     position: absolute;
     right: 40px;
-}
+} */
 
 .table-container {
     margin-top: 30px;
@@ -95,6 +95,10 @@ body {
 
 .crud {
     margin: 0 60px;
+}
+
+.crud-container {
+    width: 1200px;
 }
 
 .adminForm-container {
@@ -134,3 +138,12 @@ body {
     height:fit-content;
     margin: 20px 60px 0 0;
 }
+
+.btn.active {
+    background-color: #6f7780; /* Example active button background color */
+    color: #ffffff; /* Example active button text color */
+}
+
+/* .adminComment {
+    
+} */

@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="crud-container p-5">
-        <h1>Book</h1>
+        <h1>Book Details</h1>
         <table class="table">
             <tbody>
                 <tr>
@@ -12,38 +12,139 @@
                     <td>{{ book.id }}</td>
                 </tr>
                 <tr>
-                    <th>Title</th>
+                    <th>{% trans %}Title{% endtrans %}</th>
                     <td>{{ book.title }}</td>
                 </tr>
                 <tr>
-                    <th>Author</th>
+                    <th>{% trans %}Author{% endtrans %}</th>
                     <td>{{ book.author }}</td>
                 </tr>
                 <tr>
-                    <th>YearPublished</th>
+                    <th>{% trans %}YearPublished{% endtrans %}</th>
                     <td>{{ book.yearPublished }}</td>
                 </tr>
                 <tr>
-                    <th>Image</th>
+                    <th>{% trans %}Image{% endtrans %}</th>
                     <td>{{ book.image }}</td>
                 </tr>
                 <tr>
-                    <th>Available</th>
+                    <th>{% trans %}Available{% endtrans %}</th>
                     <td>{{ book.available ? 'Yes' : 'No' }}</td>
                 </tr>
                 <tr>
-                    <th>Rating</th>
+                    <th>{% trans %}Rating{% endtrans %}</th>
                     <td>{{ book.rating }}</td>
                 </tr>
                 <tr>
-                    <th>Description</th>
+                    <th>{% trans %}Description{% endtrans %}</th>
                     <td>{{ book.description }}</td>
                 </tr>
             </tbody>
         </table>
-        <a href="{{ path('app_admin_book_index') }}">back to list</a>
-        <a href="{{ path('app_admin_book_edit', {'id': book.id}) }}">edit</a>
+
+        <div class="btns-container d-flex">
+              <a href="{{ path('app_admin_book_index') }}">{% trans %}back to list{% endtrans %}</a>
+        <a href="{{ path('app_admin_book_edit', {'id': book.id}) }}">{% trans %}edit{% endtrans %}</a>
+            <div class="container p-0 m-1">{{ include('admin_book/_delete_form.html.twig') }}</div>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="loanHistory-container">
+        
+            <h3 class="text-center py-2" style="background-color:cornsilk">Loan History</h3>
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Return Date</th>
+                        <th>Member</th>
+                        <th>Admin Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if loans is not empty %}
+                    {% for loan in loans %}
+                        <tr>
+                            <td>{{ loan.id }}</td>
+                            <td>{{ loan.startDate|date('m-d-Y') }}</td>
+                            <td>{{ loan.endDate|date('m-d-Y') }}</td>
+                            {% if loan.returnDate %}
+                                <td>{{ loan.returnDate|date('m-d-Y') }}</td>
+                            {% else %}
+                                <td style="color:red">This book has not yet been returned.</td>
+                            {% endif %}
+                            <td>{{ loan.getBorrower.lastName|upper }}, {{ loan.getBorrower.firstName }}</td>
+                            <td>
+                                {% if loan.adminComment is empty %}
+                                    <form method="post" action="{{ path('update_loan_comment', {'id': loan.id}) }}">
+                                        <textarea name="comment" class="form-control" aria-label="Loan Comment"></textarea>
+                                        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                    </form>
+                                {% else %}
+                                    {{ loan.adminComment }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">
+                        <br>
+                            <p class="text-center">This book has no recorded loan information.</p>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+
+            </table>
+        
+        </div>
+
+        
+
+
     </div>
 
-    {{ include('admin_book/_delete_form.html.twig') }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitButtons = document.querySelectorAll('.submit-comment');
+
+        submitButtons.forEach(button => {
+            button.addEventListener('click', async function() {
+                const loanId = button.dataset.loanId;
+                const textarea = button.parentNode.querySelector('textarea');
+                const comment = textarea.value;
+
+                try {
+                    const response = await fetch(`/update_loan_comment/${loanId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ comment })
+                    });
+
+                    if (response.ok) {
+                        // Optionally handle success (e.g., display a success message)
+                        textarea.value = comment; // Update textarea value
+                    } else {
+                        // Handle error response
+                        console.error('Failed to update loan comment');
+                    }
+                } catch (error) {
+                    console.error('Error updating loan comment:', error);
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}
+
+
+
