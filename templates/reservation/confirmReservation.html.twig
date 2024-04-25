@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% trans %}Reservation confirmation{% endtrans %}
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+				<div class="card mt-5">
+					<div class="card-body">
+						<h1 class="card-title text-center">{% trans %}Reservation confirmation{% endtrans %}</h1>
+						<p class="card-text">{% trans %}Your reservation has been successfully registered! Here is a summary
+							{% endtrans %}:</p>
+						<ul class="list-group">
+							<li class="list-group-item">{% trans %}Startdate
+								{% endtrans %}:
+								{{ reservation.startDate|date('Y-m-d H:i:s') }}</li>
+							<li class="list-group-item">{% trans %}Enddate
+								{% endtrans %}:
+								{{ reservation.endDate|date('Y-m-d H:i:s') }}</li>
+							<li class="list-group-item">{% trans %}go reserved
+								{% endtrans %}:
+								{{ reservation.idRoom.name }}</li>
+
+						</ul>
+						<p class="mt-3">{% trans %}You will be redirected to the home page in
+							{% endtrans %}<span id="countdown">4</span>
+							{% trans %}
+							seconds{% endtrans %}.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+
+		let countdown = 4;
+setInterval(function () {
+countdown--;
+document.getElementById('countdown').innerText = countdown;
+if (countdown <= 0) {
+window.location.href = '{{ path('app_home') }}';
+}
+}, 1000);
+	</script>
+{% endblock %}

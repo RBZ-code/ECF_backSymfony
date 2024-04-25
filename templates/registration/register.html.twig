@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}Register{% endtrans %}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{% trans %}Register{% endtrans %}</div>
+                    <div class="card-body">
+                        {{ form_errors(registrationForm) }}
+                        {{ form_start(registrationForm) }}
+                            <div class="mb-3">
+                                {{ form_row(registrationForm.email, { 'attr': {'class': 'form-control', 'placeholder': 'Email'} }) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(registrationForm.plainPassword, { 'attr': {'class': 'form-control', 'placeholder': 'Password'} }) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(registrationForm.street, { 'attr': {'class': 'form-control', 'placeholder': 'Street Address'} }) }}
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    {{ form_row(registrationForm.firstName, { 'attr': {'class': 'form-control', 'placeholder': 'First Name'} }) }}
+                                </div>
+                                <div class="col">
+                                    {{ form_row(registrationForm.lastName, { 'attr': {'class': 'form-control', 'placeholder': 'Last Name'} }) }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(registrationForm.dateOfBirth, { 'attr': {'class': 'form-control', 'placeholder': 'Date of Birth'} }) }}
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    {{ form_row(registrationForm.postalCode, { 'attr': {'class': 'form-control', 'placeholder': 'Postal Code'} }) }}
+                                </div>
+                                <div class="col">
+                                    {{ form_row(registrationForm.city, { 'attr': {'class': 'form-control', 'placeholder': 'City'} }) }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(registrationForm.country, { 'attr': {'class': 'form-control', 'placeholder': 'Country'} }) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(registrationForm.phoneNumber, { 'attr': {'class': 'form-control', 'placeholder': 'Phone Number'} }) }}
+                            </div>
+                            <div class="form-check mb-3">
+                                {{ form_row(registrationForm.agreeTerms, { 'label': 'Agree to Terms', 'attr': {'class': 'form-check-input'} }) }}
+                                <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">{% trans %}I agree to the terms and conditions{% endtrans %}</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">{% trans %}Register{% endtrans %}</button>
+                        {{ form_end(registrationForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% block body %}
+
+<!-- Vertically centered scrollable modal -->
+    <div class="modal" id="myModal{{ book.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalCenteredScrollableTitle">Confirmation de réservation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card modalBookCard p-1">
+                            
+                            <div class="image-container py-3 px-4">
+                            {% if book.imageName %}
+                                <img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.title }}">
+                            {% else %}
+                                <img src="{{ book.image }}" class="card-img-top" id="bookImg" alt="Book Image">
+                            {% endif %}
+                            </div>
+                            <div class="book-title-container text-center pt-3">
+                                <h5 class="card-title">{{ book.title }}</h5>
+                                <p class="card-text">{{ book.author }}</p>
+                            </div>
+                            <div class="star-rating d-flex justify-content-center align-items-center">
+                            
+                                <div class="ratingNum-wrapper mx-2">{{ book.rating }} </div>
+                    
+                                {% set rating = book.rating|default(0) %} {# Default to 0 if rating is not set #}
+                                {% set fullStars = rating|round %} {# Round rating to nearest whole number #}
+                                {% set halfStar = rating > fullStars %} {# Check if there's a half star #}
+
+                                {% for i in 1..5 %}
+                                    {% if i <= fullStars %}
+                                        <i class="fas fa-star"></i> {# Filled star icon #}
+                                    {% elseif halfStar %}
+                                        <i class="fas fa-star-half-alt"></i> {# Half-filled star icon #}
+                                        {% set halfStar = false %} {# Only display one half star #}
+                                    {% else %}
+                                        <i class="far fa-star"></i> {# Empty star icon #}
+                                    {% endif %}
+                                {% endfor %}
+                                <br>
+                            </div>
+                            <br>
+                            <p class="mx-5">
+                                {% trans %}Each book loan is valid for 6 full days, including weekends and holidays, from the time the book is reserved.
+
+                                It is possible to request a one-time extension to borrow the book before the return date, which adds an additional 6 days (only one extension can be requested for the book before its return).{% endtrans %}
+                            </p>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    <a href="{{ path('app_confirm_reservation', { 'bookId': book.id }) }}" class="btn btn-primary">{% trans %}Confirm Reservation{% endtrans %}</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {# end of modal #}
+{% endblock %}

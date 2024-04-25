@@ -1,0 +1,146 @@
+'Room successfully created.': 'Chambre créée avec succès.'
+'Room successfully updated.': 'Chambre mise à jour avec succès.'
+'There are reservations linked to this room. Delete them first.': "Des réservations sont liées à cette chambre. Supprimez-les d'abord."
+'Room successfully deleted.': 'Chambre supprimée avec succès.'
+'This book is already reserved and is not available.': "Ce livre est déjà réservé et n'est pas disponible."
+'Registration successful. You can now log in.': 'Inscription réussie. Vous pouvez maintenant vous connecter.'
+'An error occurred during the registration. Please try again later.': "Une erreur est survenue lors de l'inscription. Veuillez réessayer plus tard."
+'You must be logged in to book a room': 'Vous devez être connecté pour réserver une chambre'
+'You already have a reservation for this date and time.': 'Vous avez déjà une réservation pour cette date et heure.'
+'The reservation date must be after the current date': 'La date de réservation doit être postérieure à la date actuelle'
+'The reservation cannot end after the room closes (8:00 PM)': 'La réservation ne peut pas se terminer après la fermeture de la chambre (20h00)'
+'Edit Book': 'Modifier le livre'
+'Book index': 'Index des livres'
+Books: Livres
+'Show books not returned on time': 'Afficher les livres non retournés à temps'
+'Create new': 'Créer nouveau'
+Id: Id
+Image: Image
+Title: Titre
+Available: Disponible
+'Loan Information': 'Informations sur le prêt'
+Actions: Actions
+'Start :': 'Début :'
+'End :': 'Fin :'
+'Confirm return': 'Confirmer le retour'
+show: afficher
+edit: modifier
+'No records found': 'Aucun enregistrement trouvé'
+'New Book': 'Nouveau livre'
+'Create new Book': 'Créer un nouveau livre'
+'back to list': 'retour à la liste'
+Author: Auteur
+YearPublished: 'Année de publication'
+Rating: Évaluation
+Description: Description
+Delete: Supprimer
+'Edit Utilisateur': "Modifier l'utilisateur"
+Password: 'Mot de passe'
+FirstName: Prénom
+LastName: 'Nom de famille'
+DateOfBirth: 'Date de naissance'
+City: Ville
+PostalCode: 'Code postal'
+PhoneNumber: 'Numéro de téléphone'
+Country: Pays
+Street: Rue
+'no records found': 'aucun enregistrement trouvé'
+'New Utilisateur': 'Nouvel utilisateur'
+'Create new Utilisateur': 'Créer un nouvel utilisateur'
+'Edit Room': 'Modifier la chambre'
+'Back to List': 'Retour à la liste'
+'Room index': 'Index des chambres'
+'Room Index': 'Index des chambres'
+'Create New Room': 'Créer une nouvelle chambre'
+Capacity: Capacité
+Name: Nom
+Show: Afficher
+Edit: Modifier
+'New Room': 'Nouvelle chambre'
+'Create new Room': 'Créer une nouvelle chambre'
+'Back to list': 'Retour à la liste'
+Room: Chambre
+'Room Details': 'Détails de la chambre'
+'Reservations in progress': 'Réservations en cours'
+Lastname: 'Nom de famille'
+Firstname: Prénom
+'Start date': 'Date de début'
+'End date': 'Date de fin'
+actions: actions
+User: Utilisateur
+Home: Accueil
+Connection: Connexion
+Reservation: Réservation
+Disconnect: Déconnexion
+Profil: Profil
+'My loans': 'Mes prêts'
+Rooms: Chambres
+Loans: Prêts
+'Publication date': 'Date de publication'
+State: État
+Unknown: Inconnu
+'To book': Réserver
+'Not available': 'Non disponible'
+'This book is planned to be available to reserve from': 'Ce livre est prévu pour être disponible à la réservation à partir de'
+'All our books': 'Tous nos livres'
+'See more': 'Voir plus'
+"Each book loan is valid for 6 full days, including weekends and holidays, from the time the book is reserved.\n\n                                It is possible to request a one-time extension to borrow the book before the return date, which adds an additional 6 days (only one extension can be requested for the book before its return).": "Chaque prêt de livre est valable pour 6 jours complets, y compris les week-ends et les jours fériés, à partir du moment où le livre est réservé.\n\n                                Il est possible de demander une prolongation unique pour emprunter le livre avant la date de retour, ce qui ajoute 6 jours supplémentaires (une seule prolongation peut être demandée pour le livre avant son retour)."
+Cancel: Annuler
+'Confirm Reservation': 'Confirmer la réservation'
+Loan!: 'Emprunter !'
+Hello: Bonjour
+Register: "S'inscrire"
+'I agree to the terms and conditions': "Je suis d'accord avec les termes et conditions"
+'Reservation confirmation': 'Confirmation de réservation'
+'go reservedReservation confirmation': 'aller à la confirmation de réservation'
+'Your reservation has been successfully registered! Here is a summary': 'Votre réservation a été enregistrée avec succès ! Voici un résumé'
+Startdate: 'Date de début'
+Enddate: 'Date de fin'
+'go reserved': 'aller à la réservation'
+'You will be redirected to the home page in': "Vous serez redirigé vers la page d'accueil dans"
+seconds: secondes
+'Reservation times': 'Horaires de réservation'
+'Reservation times available': 'Horaires de réservation disponibles'
+'Reservation at': 'Réservation à'
+Complete: Complet
+Unavailable: 'Non disponible'
+'You have already reserved this time': 'Vous avez déjà réservé cette heure'
+'Booking form': 'Formulaire de réservation'
+'Room Reservation System': 'Système de réservation de chambres'
+'rooms available': 'chambres disponibles'
+Equipements: Équipements
+'Please sign in': 'Veuillez vous connecter'
+'You are logged in as': 'Vous êtes connecté en tant que'
+'Remember me': 'Se souvenir de moi'
+'Sign in': 'Se connecter'
+'No loans found': 'Aucun prêt trouvé'
+Status: Statut
+Loan: Prêt
+'Extension already used': 'Extension déjà utilisée'
+Extend: Prolonger
+'Extension confirmation': 'Confirmation de prolongation'
+"Are you sure you want to request an extension for this book?\n\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\tOnly one extension can be requested (during the borrowing period) for the book before it is returned, which adds an additional 6 days.": "Êtes-vous sûr de vouloir demander une prolongation pour ce livre?\n\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\tUne seule prolongation peut être demandée (pendant la période d'emprunt) pour le livre avant qu'il ne soit retourné, ce qui ajoute 6 jours supplémentaires."
+'Confirm Extension': 'Confirmer la prolongation'
+Registration: Inscription
+'There are': 'Il y a'
+'Votre profil a été modifié.': 'Votre profil a été modifié.'
+'You must be logged in to reserve a book.': 'Vous devez être connecté pour réserver un livre.'
+'All books': 'Tous les livres'
+'Overdue Books': 'Livres en retard'
+'Start Date': 'Date de début'
+'End Date': 'Date de fin'
+'Return Date': 'Date de retour'
+Member: Membre
+'Admin Comment': "Commentaire de l'administrateur"
+'This book has not yet been returned.': "Ce livre n'a pas encore été rendu."
+Submit: Envoyer
+'This book has no recorded loan information.': 'Ce livre ne contient aucune information de prêt enregistrée.'
+'My Reservations': 'Mes réservations'
+'Edit Profil': ' Modifier le profil'
+Users: Utilisateurs
+Logout: 'Se déconnecter'
+Returned: Revenu
+Book: Livre
+'Book Details': 'Details du livre'
+à: à
+'Loan History': 'Historique des réservations'

@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!
+{% endblock %}
+
+{% block body %}
+
+	<div class="library-container">
+		<h1 class="mt-5">{% trans %}My loans{% endtrans %}</h1>
+
+		{% if loans is empty %}
+			<p>{% trans %}No loans found{% endtrans %}.</p>
+		{% else %}
+
+			<div class="table-container">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">ID #</th>
+							<th scope="col">{% trans %}Status{% endtrans %}</th>
+							<th scope="col">Image</th>
+							<th scope="col">{% trans %}Title{% endtrans %}</th>
+							<th scope="col">{% trans %}Start date{% endtrans %}</th>
+							<th scope="col">{% trans %}End date{% endtrans %}</th>
+							<th scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for loan in loans %}
+							<tr>
+								<th scope="row">{{ loan.book.id }}</th>
+								<td>
+									{% if loan.returnDate is null %}
+										<span class="activeStatus">
+											<strong>
+{% trans %}Loan{% endtrans %}</strong>
+										</span>
+									{% else %}
+										Return Date:
+										{{ loan.returnDate|date('Y-m-d') }}
+										<br>
+										<strong>{% trans %}Returned{% endtrans %}</strong>
+									{% endif %}
+								</td>
+								<td><img src="{{ loan.book.image }}" class="myLoansImages" alt="Book Image"></td>
+								<td>{{ loan.book.title }}</td>
+								<td>{{ loan.startDate|date('Y-m-d') }}
+									{% trans %}à{% endtrans %}
+									{{ loan.startDate|date('H:i') }}</td>
+								{% if loan.extensionDate is null %}
+									<td>{{ loan.endDate|date('Y-m-d') }}
+										{% trans %}à{% endtrans %}
+										{{ loan.endDate|date('H:i') }}</td>
+								{% else %}
+									<td>{{ loan.extensionDate|date('Y-m-d') }}
+										{% trans %}à{% endtrans %}
+										{{ loan.extensionDate|date('H:i') }}</td>
+								{% endif %}
+								<td>
+									{% if loan.returnDate is null %}
+										{% if loan.extension %}
+											<button type="button" class="btn btn-outline-primary" disabled>{% trans %}Extension already used{% endtrans %}</button>
+										{% else %}
+											<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#myModal{{ loan.book.id }}">
+												{% trans %}Extend{% endtrans %}</button>
+										{% endif %}
+
+									{% endif %}
+								</td>
+							</tr>
+
+							<!-- Vertically centered scrollable modal -->
+							<div class="modal" id="myModal{{ loan.book.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalCenteredScrollableTitle">{% trans %}Extension confirmation{% endtrans %}</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div class="modalBookCard p-1">
+
+												<p class="mx-5">
+													{% trans %}Are you sure you want to request an extension for this book?
+													
+													Only one extension can be requested (during the borrowing period) for the book before it is returned, which adds an additional 6 days.{% endtrans %}
+												</p>
+												<br>
+												<div class="extensionModalInfo d-flex p-2">
+
+													<img src="{{ loan.book.image }}" id="extensionModalImg" alt="Book Image">
+
+													<div class="book-title-container pt-3">
+														<h5 class="card-title">{{ loan.book.title }}</h5>
+														<p class="card-text">{{ loan.book.author }}</p>
+													</div>
+
+												</div>
+												<br>
+
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+												{% trans %}Cancel{% endtrans %}</button>
+											<a href="{{ path('app_extend_loan', { 'loanId': loan.id }) }}" class="btn btn-primary">{% trans %}Confirm Extension{% endtrans %}</a>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							{# end of modal #}
+
+
+						{% endfor %}
+
+					</tbody>
+				</table>
+			</div>
+
+		{% endif %}
+	</div>
+
+{% endblock %}
