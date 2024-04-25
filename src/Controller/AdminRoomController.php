@@ -79,10 +79,10 @@ class AdminRoomController extends AbstractController
 
 
         // $data = json_encode($reservationEvents);
-        $roomReservations = $roomrepo->findAll();
+ 
 
         return $this->render('admin_room/show.html.twig', [
-            'roomrepo' => $roomReservations,
+   
             'room' => $room,
             // 'reservations' => $reservations,
             // 'reservationEvents' => $data, // Pass reservation event data to the template

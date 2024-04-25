@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Repository\LoanRepository;
+use App\Repository\RoomRepository;
+use App\Repository\ReservationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,4 +38,23 @@ class UserController extends AbstractController
         ]);
     }
 
+
+    #[Route('/my_reservation', name: 'app_my_reservation')]
+    public function app_my_reservation(ReservationRepository $reservationRepo): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $reservations = $reservationRepo->findBy([
+            'User' => $user,
+        ]);
+
+
+        return $this->render('user/reservations.html.twig', [
+            'reservations' => $reservations,
+        ]);
+    }
 }

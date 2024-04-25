@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Reservations{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">My Reservations</h1>
+
+        {% if reservations is empty %}
+            <div class="alert alert-info" role="alert">
+                No reservations found.
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Room</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations|sort((a, b) => a.startdate <=> b.startdate)%}
+                            <tr>
+                                <td>{{ reservation.idRoom.name }}</td>
+                                <td>{{ reservation.startDate|date('Y-m-d H:i') }}</td>
+                                <td>{{ reservation.endDate|date('Y-m-d H:i') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
