@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Reservation;
+use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,10 +14,15 @@ class HomeController extends AbstractController
 {
     
     #[Route('/', name: 'app_home')]
-    public function index(Request $request): Response
+    public function index( UtilisateurRepository $utilisateurRepo): Response
     {
         // Récupérer le prénom de l'utilisateur à partir des informations de session
         
+        $user = $this->getUser();
+        
+
+       
+
         $welcomeMessage = 'Welcome!';
 
    

@@ -6,26 +6,19 @@ use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class Utilisateur1Type extends AbstractType
+class Utilisateur2Type extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options,): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email')
-            ->add('roles', ChoiceType::class, [
-                    'choices' => [
-                        '1 heure' => 1,
-                        '2 heure' => 2,
-                        '3 heure' => 3,
-                        '4 heure' => 4,             
-                    ]
-                ])
+            // ->add('roles')
+            ->add('password')
             ->add('firstName')
             ->add('lastName')
             ->add('dateOfBirth', null, [
-                'widget' => 'single_text'
+                'widget' => 'single_text',
             ])
             ->add('city')
             ->add('postalCode')

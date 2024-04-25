@@ -123,3 +123,22 @@ Extend: Prolonger
 'Confirm Extension': 'Confirmer la prolongation'
 Registration: Inscription
 'There are': 'Il y a'
+'Votre profil a été modifié.': 'Votre profil a été modifié.'
+'You must be logged in to reserve a book.': 'Vous devez être connecté pour réserver un livre.'
+'All books': 'Tous les livres'
+'Overdue Books': 'Livres en retard'
+'Start Date': 'Date de début'
+'End Date': 'Date de fin'
+'Return Date': 'Date de retour'
+Member: Membre
+'Admin Comment': "Commentaire de l'administrateur"
+'This book has not yet been returned.': "Ce livre n'a pas encore été rendu."
+Submit: Envoyer
+'This book has no recorded loan information.': 'Ce livre ne contient aucune information de prêt enregistrée.'
+'My Reservations': 'Mes réservations'
+'Edit Profil': '
+Modifier le profil'
+Users: Utilisateurs
+Logout: Se déconnecter
+Returned: Revenu
+

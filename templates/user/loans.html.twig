@@ -39,21 +39,21 @@
 										Return Date:
 										{{ loan.returnDate|date('Y-m-d') }}
 										<br>
-										<strong>Returned</strong>
+										<strong>{% trans %}Returned{% endtrans %}</strong>
 									{% endif %}
 								</td>
 								<td><img src="{{ loan.book.image }}" class="myLoansImages" alt="Book Image"></td>
 								<td>{{ loan.book.title }}</td>
 								<td>{{ loan.startDate|date('Y-m-d') }}
-									à
+									{% trans %}à{% endtrans %}
 									{{ loan.startDate|date('H:i') }}</td>
 								{% if loan.extensionDate is null %}
 									<td>{{ loan.endDate|date('Y-m-d') }}
-										à
+										{% trans %}à{% endtrans %}
 										{{ loan.endDate|date('H:i') }}</td>
 								{% else %}
 									<td>{{ loan.extensionDate|date('Y-m-d') }}
-										à
+										{% trans %}à{% endtrans %}
 										{{ loan.extensionDate|date('H:i') }}</td>
 								{% endif %}
 								<td>

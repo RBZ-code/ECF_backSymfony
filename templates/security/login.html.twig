@@ -24,7 +24,7 @@
                                 <div class="mb-3">
                                     {% trans %}You are logged in as{% endtrans %}
                                     {{ app.user.userIdentifier }},
-                                    <a href="{{ path('app_logout') }}">Logout</a>
+                                    <a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
                                 </div>
                             {% endif %}
 
@@ -33,7 +33,7 @@
                                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
                             </div>
                             <div class="mb-3">
-                                <label for="inputPassword" class="form-label">Password</label>
+                                <label for="inputPassword" class="form-label">{% trans %}Password{% endtrans %}</label>
                                 <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
                             </div>
 
