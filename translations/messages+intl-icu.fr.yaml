@@ -122,3 +122,4 @@ Extend: Prolonger
 "Are you sure you want to request an extension for this book?\n\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\tOnly one extension can be requested (during the borrowing period) for the book before it is returned, which adds an additional 6 days.": "Êtes-vous sûr de vouloir demander une prolongation pour ce livre?\n\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\tUne seule prolongation peut être demandée (pendant la période d'emprunt) pour le livre avant qu'il ne soit retourné, ce qui ajoute 6 jours supplémentaires."
 'Confirm Extension': 'Confirmer la prolongation'
 Registration: Inscription
+'There are': 'Il y a'
