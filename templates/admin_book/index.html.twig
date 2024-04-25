@@ -3,14 +3,20 @@
 {% block title %}{% trans %}Book index{% endtrans %}{% endblock %}
 
 {% block body %}
-    {# <div class="page-container"> #}
 
         <div class="crud-container">
             <div class="headingAndBtn">
                 <h1 class="mt-3 indentedHeading">{% trans %}Books{% endtrans %}</h1>
                 {# button that activates a filter so that only overdue books are displayed in below table #}
-                <a href="{{ path('app_admin_book_index', {'overdue': true}) }}" class="btn btn-outline-danger ">{% trans %}Show books not returned on time{% endtrans %}</a>
-                <a href="{{ path('app_admin_book_new') }}" class="btn btn-primary">{% trans %}Create new{% endtrans %}</a>
+
+                <div class="btn-container">
+                    
+                    <a href="{{ path('app_admin_book_index') }}" class="btn btn-outline-secondary me-1 {% if app.request.attributes.get('_route') == 'app_admin_book_index' %}active{% endif %}">All books</a>
+                    <a href="{{ path('app_admin_book_overdue') }}" class="btn btn-outline-secondary {% if app.request.attributes.get('_route') == 'app_admin_book_overdue' %}active{% endif %}">Overdue Books</a>
+
+                </div>
+                <a href="{{ path('app_admin_book_new') }}" class="btn btn-primary">Create new</a>
+
             </div>
             <div class="crud">
             
@@ -28,7 +34,6 @@
                     </thead>
                     <tbody>
                         {% for book in books %}
-                            {# {% if book.isOverdue or not book.available %} #}
                             <tr {% if book.isOverdue %}class="table-danger"{% endif %}>
                                 <td>{{ book.id }}</td>
                                 
@@ -62,15 +67,24 @@
                                             <strong>{% trans %}End :{% endtrans %}</strong> {{ loanEndDate }}
                                         {% endif %}
                                         <br>
-                                        <a href="{{ path('app_confirm_return', { 'bookId': book.id }) }}" class="btn btn-outline-success confirmBtn my-2">{% trans %}Confirm return{% endtrans %}</a>
+
+                                        <a href="{{ path('app_confirm_return', { 'bookId': book.id }) }}"
+                                        class="btn btn-outline-success confirmBtn my-2"
+                                        onclick="return confirm('Are you sure you want to confirm book return?');">
+                                        Confirmer restitution
+                                        </a>
+
+
                                     {% else %}
                                         -
                                     {% endif %}
                                 </td>
 
                                 <td>
+
                                     <a href="{{ path('app_admin_book_show', {'id': book.id}) }}">{% trans %}show{% endtrans %}</a>
                                     <a href="{{ path('app_admin_book_edit', {'id': book.id}) }}">{% trans %}edit{% endtrans %}</a>
+
                                 </td>
                             </tr>
                         {% else %}
@@ -84,5 +98,7 @@
             </div>
             
         </div>
-    {# </div> #}
+
+
+   
 {% endblock %}

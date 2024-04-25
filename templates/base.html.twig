@@ -82,12 +82,14 @@
 								{% trans %}Rooms{% endtrans %}</a>
 						</li>
 						<li class="nav-item">
+            
 							<a href="{{ path('app_admin_book_index') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_admin_book_index' %}active{% endif %}" style='color: black'>
 								<svg class="bi pe-none me-2" width="16" height="16">
 									<use xlink:href="#speedometer2"></use>
 								</svg>
 								{% trans %}Books{% endtrans %}</a>
 						</li>
+
 						<li class="nav-item">
 							<a href="#" class="nav-link {% if app.request.attributes.get('_route') == 'app_admin_orders' %}active{% endif %}" style='color: black'>
 								<svg class="bi pe-none me-2" width="16" height="16">

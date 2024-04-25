@@ -21,14 +21,12 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-    public function findAvailable():array 
+    public function findOverdueBooks(): array
     {
         return $this->createQueryBuilder('b')
-        ->andWhere('b.available = :available')
-        ->setParameter('available', 1)
-        ->orderBy('b.id', 'ASC')
-        ->getQuery()
-        ->getResult();
+            ->andWhere('b.isOverdue = true')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**

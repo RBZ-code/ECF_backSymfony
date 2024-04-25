@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Book;
 use App\Entity\Loan;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Loan>
@@ -20,6 +21,17 @@ class LoanRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Loan::class);
     }
+
+    public function findLoansByBookOrderedByStartDateDesc(Book $book): array
+{
+    return $this->createQueryBuilder('l')
+        ->where('l.book = :book')
+        ->setParameter('book', $book)
+        ->orderBy('l.start_date', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
+
 
     //    /**
     //     * @return Loan[] Returns an array of Loan objects
