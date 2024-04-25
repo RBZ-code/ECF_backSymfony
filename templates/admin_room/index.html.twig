@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Room index{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1 class="mt-4">Room Index</h1>
+        {% for flash_message in app.flashes('success') %}
+			<div class="alert alert alert-success">
+				{{ flash_message }}
+			</div>
+		{% endfor %}
+        {% for flash_message in app.flashes('danger') %}
+			<div class="alert alert alert-danger">
+				{{ flash_message }}
+			</div>
+		{% endfor %}
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <a href="{{ path('app_admin_room_new') }}" class="btn btn-primary mb-3">Create New Room</a>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Capacity</th>
+                                <th scope="col">Available</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for room in rooms %}
+                                <tr>
+                                    <td>{{ room.id }}</td>
+                                    <td>{{ room.capacity }}</td>
+                                    <td>{{ room.available ? 'Yes' : 'No' }}</td>
+                                    <td>{{ room.name }}</td>
+                                    <td>
+                                        <a href="{{ path('app_admin_room_show', {'id': room.id}) }}" class="btn btn-info btn-sm">Show</a>
+                                        <a href="{{ path('app_admin_room_edit', {'id': room.id}) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5">No records found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

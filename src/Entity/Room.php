@@ -12,7 +12,7 @@ class Room
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id = null;
 
     #[ORM\Column]
@@ -24,11 +24,8 @@ class Room
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    /**
-     * @var Collection<int, Equipment>
-     */
-    #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'room')]
-    private Collection $equipment;
+  
+    
 
     /**
      * @var Collection<int, Reservation>
@@ -36,10 +33,20 @@ class Room
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'idRoom')]
     private Collection $reservations;
 
+    /**
+     * @var Collection<int, Equipment>
+     */
+    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'rooms')]
+    private Collection $equipment;
+
+   
+
     public function __construct()
     {
-        $this->equipment = new ArrayCollection();
+      
         $this->reservations = new ArrayCollection();
+        $this->equipment = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -83,32 +90,9 @@ class Room
         return $this;
     }
 
-    /**
-     * @return Collection<int, Equipment>
-     */
-    public function getEquipment(): Collection
-    {
-        return $this->equipment;
-    }
 
-    public function addEquipment(Equipment $equipment): static
-    {
-        if (!$this->equipment->contains($equipment)) {
-            $this->equipment->add($equipment);
-            $equipment->addRoom($this);
-        }
+  
 
-        return $this;
-    }
-
-    public function removeEquipment(Equipment $equipment): static
-    {
-        if ($this->equipment->removeElement($equipment)) {
-            $equipment->removeRoom($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Reservation>
@@ -139,4 +123,30 @@ class Room
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Equipment>
+     */
+    public function getEquipment(): Collection
+    {
+        return $this->equipment;
+    }
+
+    public function addEquipment(Equipment $equipment): static
+    {
+        if (!$this->equipment->contains($equipment)) {
+            $this->equipment->add($equipment);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipment(Equipment $equipment): static
+    {
+        $this->equipment->removeElement($equipment);
+
+        return $this;
+    }
+
+   
 }

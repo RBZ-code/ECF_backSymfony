@@ -61,6 +61,9 @@ class Book
     #[ORM\OneToMany(targetEntity: Loan::class, mappedBy: 'book', orphanRemoval: true)]
     private Collection $loans;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isOverdue = null;
+
     public function __construct()
     {
         $this->loans = new ArrayCollection();
@@ -232,6 +235,18 @@ class Book
                 $loan->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isOverdue(): ?bool
+    {
+        return $this->isOverdue;
+    }
+
+    public function setOverdue(?bool $isOverdue): static
+    {
+        $this->isOverdue = $isOverdue;
 
         return $this;
     }

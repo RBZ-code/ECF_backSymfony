@@ -5,6 +5,7 @@ body {
 .library-container {
     width: 80%;
     margin: 0 auto;
+    padding: 0 40px;
 }
 
 .details-container {
@@ -96,8 +97,14 @@ body {
     margin: 0 60px;
 }
 
+.crud-container {
+    width: 1200px;
+}
+
 .adminForm-container {
+    width: 60%;
     padding: 20px 80px;
+    margin: 0 auto;
 }
 
 .backBtn-container {
@@ -105,7 +112,7 @@ body {
 }
 
 .crudImg {
-    height: 100px;
+    height: 90px;
     width: auto;
 }
 
@@ -116,3 +123,27 @@ body {
 .indentedHeading {
     margin-left: 60px;
 }
+
+.adminMain-container {
+    width: 100%;
+    margin: 40px auto;
+}
+
+.headingAndBtn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.headingAndBtn a {
+    height:fit-content;
+    margin: 20px 60px 0 0;
+}
+
+.btn.active {
+    background-color: #6f7780; /* Example active button background color */
+    color: #ffffff; /* Example active button text color */
+}
+
+/* .adminComment {
+    
+} */
