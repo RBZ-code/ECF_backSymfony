@@ -1,0 +1,14 @@
+Groupe : Wolfgang - Romain - Arègue
+
+Partie Rouge ( Utilisateur ) => Arègue
+Partie Verte ( Livres ) => Wolfgang
+Partie Voilette ( Salles ) => Romain
+
+Lien Git Hub 
+
+=> https://github.com/RBZ-code/ECF_backSymfony.git
+
+Problèmes:
+
+=> Dropdown sur la bar Nav ne fonctionne pas à certain moment.
+=> Problème Fuseaux horaire (+2h00) pour le systeme de réservation des Rooms
